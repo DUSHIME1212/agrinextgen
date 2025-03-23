@@ -9,7 +9,7 @@ import HeroFeatures from "@/components/home/HeroFeatures";
 import LatestBlogs from "@/components/home/latestBlogs";
 import Layout from "@/components/layout/Layout";
 import CartPopup from "@/components/shop/CartPopup";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 interface CartItem {
   id: string;
@@ -19,6 +19,8 @@ interface CartItem {
   image: string;
   attributes?: Record<string, string>;
 }
+
+
 
 const initialCartItems: CartItem[] = [
   {
@@ -33,7 +35,7 @@ const initialCartItems: CartItem[] = [
   },
 ];
 
-const page = ({ children }: { children: React.ReactNode }) => {
+const page= () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
 
@@ -80,3 +82,6 @@ const page = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default page;
+
+
+
