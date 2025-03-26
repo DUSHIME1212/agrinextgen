@@ -12,15 +12,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import Logo from "../home/Logo";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-secondary border-border border-t p-16">
+    <footer className="bg-background border-border lg:px-32 border-t p-16">
       <div className="container-custom">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div>
-            <Link href="/" className="mb-6 inline-block">
+            <Link href="/" className="mb-6 inline-flex gap-2 items-center">
+            <Logo className="size-9"/>
               <span className="text-primary text-2xl font-bold">
                 AgriNextGen
               </span>

@@ -31,10 +31,9 @@ const Layout: React.FC<LayoutProps> = ({
   const shouldShowBreadcrumb = showBreadcrumb && location !== '/';
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <div className="flex flex-col  min-h-screen">
       
-      <main className={cn("flex-grow px-8 md:px-16 pt-[76px]", className)}>
+      <main className={cn("flex-grow  px-8 md:px-16 pt-[76px]", className)}>
         {shouldShowBreadcrumb && (
           <div className="bg-secondary border-y border-border">
             <div className={fullWidth ? "container-custom" : "container-custom max-w-5xl"}>
@@ -50,8 +49,6 @@ const Layout: React.FC<LayoutProps> = ({
           {children}
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

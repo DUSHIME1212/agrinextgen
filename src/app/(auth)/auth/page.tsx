@@ -1,75 +1,106 @@
 "use client"
 
-import React, { useState } from 'react';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import Layout from '@/components/layout/Layout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import type React from "react"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
+import Layout from "@/components/layout/Layout"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { loginUser, registerCustomer, registerSeller, checkAuthStatus } from "@/redux/slices/authSlice"
 
-// Customer schema for sign in
 const customerSignInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-});
+})
 
-// Customer schema for sign up
-const customerSignUpSchema = z.object({
-  fullName: z.string().min(2, { message: "Full name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const customerSignUpSchema = z
+  .object({
+    fullName: z.string().min(2, { message: "Full name must be at least 2 characters" }),
+    email: z.string().email({ message: "Please enter a valid email address" }),
+    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
 
-// Seller schema for sign in
 const sellerSignInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-});
+})
 
-// Seller schema for sign up
-const sellerSignUpSchema = z.object({
-  businessName: z.string().min(2, { message: "Business name must be at least 2 characters" }),
-  contactPerson: z.string().min(2, { message: "Contact person must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  phone: z.string().min(10, { message: "Please enter a valid phone number" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+const sellerSignUpSchema = z
+  .object({
+    businessName: z.string().min(2, { message: "Business name must be at least 2 characters" }),
+    contactPerson: z.string().min(2, { message: "Contact person must be at least 2 characters" }),
+    email: z.string().email({ message: "Please enter a valid email address" }),
+    phone: z.string().min(10, { message: "Please enter a valid phone number" }),
+    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
 
-type CustomerSignInValues = z.infer<typeof customerSignInSchema>;
-type CustomerSignUpValues = z.infer<typeof customerSignUpSchema>;
-type SellerSignInValues = z.infer<typeof sellerSignInSchema>;
-type SellerSignUpValues = z.infer<typeof sellerSignUpSchema>;
+type CustomerSignInValues = z.infer<typeof customerSignInSchema>
+type CustomerSignUpValues = z.infer<typeof customerSignUpSchema>
+type SellerSignInValues = z.infer<typeof sellerSignInSchema>
+type SellerSignUpValues = z.infer<typeof sellerSignUpSchema>
 
 const Page: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('customer');
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
-  // Customer Sign In Form
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
+
+  const [activeTab, setActiveTab] = useState("customer")
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin")
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  const dispatch = useAppDispatch()
+  const { user, error, token, isLoading } = useAppSelector((state) => state.auth)
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (token) {
+        try {
+          await dispatch(checkAuthStatus()).unwrap()
+          router.push(callbackUrl)
+        } catch (error) {
+
+        }
+      }
+    }
+
+    checkAuth()
+  }, [dispatch, token, router, callbackUrl])
+
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error)
+    }
+  }, [error])
+
   const customerSignInForm = useForm<CustomerSignInValues>({
     resolver: zodResolver(customerSignInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  });
+  })
 
-  // Customer Sign Up Form
   const customerSignUpForm = useForm<CustomerSignUpValues>({
     resolver: zodResolver(customerSignUpSchema),
     defaultValues: {
@@ -78,18 +109,16 @@ const Page: React.FC = () => {
       password: "",
       confirmPassword: "",
     },
-  });
+  })
 
-  // Seller Sign In Form
   const sellerSignInForm = useForm<SellerSignInValues>({
     resolver: zodResolver(sellerSignInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  });
+  })
 
-  // Seller Sign Up Form
   const sellerSignUpForm = useForm<SellerSignUpValues>({
     resolver: zodResolver(sellerSignUpSchema),
     defaultValues: {
@@ -100,110 +129,117 @@ const Page: React.FC = () => {
       password: "",
       confirmPassword: "",
     },
-  });
+  })
 
   // Handle customer sign in
-  function onCustomerSignInSubmit(values: CustomerSignInValues) {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
+  async function onCustomerSignInSubmit(values: CustomerSignInValues) {
+    const resultAction = await dispatch(loginUser(values))
+
+    if (loginUser.fulfilled.match(resultAction)) {
       toast.success(
         <div>
           <strong>Sign in successful</strong>
           <p>Welcome back to AgriNextGen Market!</p>
-        </div>
-      );
-      setIsLoading(false);
-    }, 1500);
+        </div>,
+      )
+      router.push(callbackUrl||"/dashboard")
+    }
   }
 
   // Handle customer sign up
-  function onCustomerSignUpSubmit(values: CustomerSignUpValues) {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
+  async function onCustomerSignUpSubmit(values: CustomerSignUpValues) {
+    const { confirmPassword, fullName, ...rest } = values
+    const userData = { name: fullName, ...rest }
+
+    const resultAction = await dispatch(registerCustomer(userData))
+
+    if (registerCustomer.fulfilled.match(resultAction)) {
       toast.success(
         <div>
           <strong>Account created successfully</strong>
           <p>Your account is now ready to use.</p>
-        </div>
-      );
-      setIsLoading(false);
-      setAuthMode('signin');
-    }, 1500);
+        </div>,
+      )
+      setAuthMode("signin")
+      customerSignInForm.setValue("email", values.email)
+    }
   }
 
-  // Handle seller sign in
-  function onSellerSignInSubmit(values: SellerSignInValues) {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
+  async function onSellerSignInSubmit(values: SellerSignInValues) {
+    const resultAction = await dispatch(loginUser(values))
+
+    if (loginUser.fulfilled.match(resultAction)) {
       toast.success(
         <div>
           <strong>Sign in successful</strong>
           <p>Welcome back to AgriNextGen Market!</p>
-        </div>
+        </div>,
       )
-      setIsLoading(false);
-    }, 1500);
+      router.push(callbackUrl)
+    }
   }
 
   // Handle seller sign up
-  function onSellerSignUpSubmit(values: SellerSignUpValues) {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
+  async function onSellerSignUpSubmit(values: SellerSignUpValues) {
+    const { confirmPassword, phone: phoneNumber, ...userData } = values
+    const updatedUserData = { ...userData, phoneNumber }
+
+    const resultAction = await dispatch(registerSeller(updatedUserData))
+
+    if (registerSeller.fulfilled.match(resultAction)) {
       toast.success(
         <div>
           <strong>Account created successfully</strong>
           <p>Your seller account is now ready to use.</p>
-        </div>
-      );
-      setIsLoading(false);
-      setAuthMode('signin');
-    }, 1500);
+        </div>,
+      )
+      setAuthMode("signin")
+      sellerSignInForm.setValue("email", values.email)
+    }
   }
+
+  // Reset password visibility when switching tabs or auth modes
+  useEffect(() => {
+    setShowPassword(false)
+    setShowConfirmPassword(false)
+  }, [activeTab, authMode])
 
   return (
     <Layout
       customBreadcrumbPaths={[
-        { name: 'Home', path: '/' },
-        { name: 'Authentication', path: '/auth' }
+        { name: "Home", path: "/" },
+        { name: "Authentication", path: "/auth" },
       ]}
     >
       <div className="py-12 max-w-md mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center">Account</h1>
-        
+
         <Tabs defaultValue="customer" onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="customer">Customer</TabsTrigger>
             <TabsTrigger value="seller">Seller</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="customer">
             <div className="space-y-4">
               <div className="flex justify-between mb-6">
                 <h2 className="text-xl font-medium">
-                  {authMode === 'signin' ? 'Customer Login' : 'Create Customer Account'}
+                  {authMode === "signin" ? "Customer Login" : "Create Customer Account"}
                 </h2>
                 <Button
                   variant="link"
                   onClick={() => {
-                    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
-                    customerSignInForm.reset();
-                    customerSignUpForm.reset();
+                    setAuthMode(authMode === "signin" ? "signup" : "signin")
+                    customerSignInForm.reset()
+                    customerSignUpForm.reset()
                   }}
                   className="text-primary"
                 >
-                  {authMode === 'signin' ? 'Create Account' : 'Sign In'}
+                  {authMode === "signin" ? "Create Account" : "Sign In"}
                 </Button>
               </div>
 
-              {authMode === 'signin' ? (
+              {authMode === "signin" ? (
                 <Form {...customerSignInForm}>
                   <form onSubmit={customerSignInForm.handleSubmit(onCustomerSignInSubmit)} className="space-y-6">
                     <FormField
@@ -227,10 +263,7 @@ const Page: React.FC = () => {
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showPassword ? "text" : "password"} 
-                                {...field} 
-                              />
+                              <Input type={showPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -300,10 +333,7 @@ const Page: React.FC = () => {
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showPassword ? "text" : "password"} 
-                                {...field}
-                              />
+                              <Input type={showPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -327,10 +357,7 @@ const Page: React.FC = () => {
                           <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showConfirmPassword ? "text" : "password"} 
-                                {...field}
-                              />
+                              <Input type={showConfirmPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -373,27 +400,27 @@ const Page: React.FC = () => {
               )}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="seller">
             <div className="space-y-4">
               <div className="flex justify-between mb-6">
                 <h2 className="text-xl font-medium">
-                  {authMode === 'signin' ? 'Seller Login' : 'Create Seller Account'}
+                  {authMode === "signin" ? "Seller Login" : "Create Seller Account"}
                 </h2>
                 <Button
                   variant="link"
                   onClick={() => {
-                    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
-                    sellerSignInForm.reset();
-                    sellerSignUpForm.reset();
+                    setAuthMode(authMode === "signin" ? "signup" : "signin")
+                    sellerSignInForm.reset()
+                    sellerSignUpForm.reset()
                   }}
                   className="text-primary"
                 >
-                  {authMode === 'signin' ? 'Create Account' : 'Sign In'}
+                  {authMode === "signin" ? "Create Account" : "Sign In"}
                 </Button>
               </div>
 
-              {authMode === 'signin' ? (
+              {authMode === "signin" ? (
                 <Form {...sellerSignInForm}>
                   <form onSubmit={sellerSignInForm.handleSubmit(onSellerSignInSubmit)} className="space-y-6">
                     <FormField
@@ -417,10 +444,7 @@ const Page: React.FC = () => {
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showPassword ? "text" : "password"} 
-                                {...field} 
-                              />
+                              <Input type={showPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -516,10 +540,7 @@ const Page: React.FC = () => {
                           <FormLabel>Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showPassword ? "text" : "password"} 
-                                {...field}
-                              />
+                              <Input type={showPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -543,10 +564,7 @@ const Page: React.FC = () => {
                           <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
                             <div className="relative">
-                              <Input 
-                                type={showConfirmPassword ? "text" : "password"} 
-                                {...field}
-                              />
+                              <Input type={showConfirmPassword ? "text" : "password"} {...field} />
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -592,7 +610,8 @@ const Page: React.FC = () => {
         </Tabs>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
+

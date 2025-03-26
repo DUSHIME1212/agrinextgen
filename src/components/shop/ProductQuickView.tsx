@@ -24,6 +24,7 @@ interface ProductQuickViewProps {
       isOutOfStock?: boolean;
       discount?: number;
       rating?: number;
+      slug?:string;
       variants?: Array<{
         name: string;
         options: string[];
@@ -272,7 +273,7 @@ interface ProductQuickViewProps {
               
               <div className="text-center">
                 <Link
-                  href={`/product/${product.id}`}
+                  href={`/product/${product.slug}`}
                   className="text-primary font-medium hover:underline"
                   onClick={onClose}
                 >

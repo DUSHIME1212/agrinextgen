@@ -9,6 +9,8 @@ import { SlidersHorizontal } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ShopSidebar from "./_components/ShopSidebar";
+import { Product, ProductsResponse } from "@/strapi/types";
+import { fetchProducts } from "@/strapi/api";
 
 
 // Agricultural product data
@@ -143,9 +145,11 @@ const CATEGORY_MAP: Record<string, string> = {
   'irrigation-systems': 'Irrigation Systems',
   'organic-products': 'Organic Products',
   'livestock-supplies': 'Livestock Supplies',
+  'natural-oils': 'Natural Oils',
 };
 
 const Page: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const { category } = useParams<{category?: string}>();
   const [filters, setFilters] = useState<any>({
     search: '',
@@ -159,83 +163,93 @@ const Page: React.FC = () => {
     newArrivals: false,
   });
   const [sortOption, setSortOption] = useState<string>('featured');
-  const [filteredProducts, setFilteredProducts] = useState(AGRICULTURAL_PRODUCTS);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  
-  // Apply filters whenever they change
+
   useEffect(() => {
-    let results = [...AGRICULTURAL_PRODUCTS];
-    
-    // Search filter
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      results = results.filter(product => 
-        product.name.toLowerCase().includes(searchLower) || 
-        product.category.toLowerCase().includes(searchLower)
-      );
-    }
-    
-    // Category filter from URL param
-    if (category && CATEGORY_MAP[category]) {
-      results = results.filter(product => product.category === CATEGORY_MAP[category]);
-    }
-    // Or from sidebar selection
-    else if (filters.categories && filters.categories.length > 0) {
-      // Convert category IDs to actual category names
-      const selectedCategories = filters.categories.map((id: string) => {
-        const categoryKey = id.replace('category-', '');
-        return CATEGORY_MAP[categoryKey] || '';
-      }).filter(Boolean);
+      const getProducts = async () => {
+        try {
+          const data: ProductsResponse = await fetchProducts();
+          setProducts(data.data); 
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+      getProducts();
+    }, []);
+  
+  
+    useEffect(() => {
+      let results = [...products];
       
-      if (selectedCategories.length > 0) {
-        results = results.filter(product => selectedCategories.includes(product.category));
+      // Search filter
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase();
+        results = results.filter(product => 
+          product.name.toLowerCase().includes(searchLower) || 
+          (product.Category && product.Category.toLowerCase().includes(searchLower))
+        );
       }
-    }
-    
-    // Price range filter
-    if (filters.priceRange) {
-      switch (filters.priceRange) {
-        case 'under15':
-          results = results.filter(product => product.price < 15);
-          break;
-        case '15-30':
-          results = results.filter(product => product.price >= 15 && product.price <= 30);
-          break;
-        case '30-50':
-          results = results.filter(product => product.price > 30 && product.price <= 50);
-          break;
-        case '50plus':
-          results = results.filter(product => product.price > 50);
-          break;
+      
+      // Category filter from URL param
+      if (category && CATEGORY_MAP[category]) {
+        results = results.filter(product => product.Category === CATEGORY_MAP[category]);
       }
-    }
-    
-    // Rating filter
-    if (filters.rating > 0) {
-      results = results.filter(product => product.rating >= filters.rating);
-    }
-    
-    // Sale items filter
-    if (filters.onSale) {
-      results = results.filter(product => product.isSale);
-    }
-    
-    // New arrivals filter
-    if (filters.newArrivals) {
-      results = results.filter(product => product.isNew);
-    }
-    
-    // Apply sorting
-    results = sortProducts(results, sortOption);
-    
-    setFilteredProducts(results);
-  }, [filters, sortOption, category]);
+      // Or from sidebar selection
+      else if (filters.categories && filters.categories.length > 0) {
+        const selectedCategories = filters.categories.map((id: string) => {
+          const categoryKey = id.replace('category-', '');
+          return CATEGORY_MAP[categoryKey] || '';
+        }).filter(Boolean);
+        
+        if (selectedCategories.length > 0) {
+          results = results.filter(product => selectedCategories.includes(product.Category));
+        }
+      }
+      
+      // Price range filter
+      if (filters.priceRange) {
+        switch (filters.priceRange) {
+          case 'under15':
+            results = results.filter(product => product.price < 15);
+            break;
+          case '15-30':
+            results = results.filter(product => product.price >= 15 && product.price <= 30);
+            break;
+          case '30-50':
+            results = results.filter(product => product.price > 30 && product.price <= 50);
+            break;
+          case '50plus':
+            results = results.filter(product => product.price > 50);
+            break;
+        }
+      }
+      
+      // Rating filter
+      if (filters.rating > 0) {
+        results = results.filter(product => product.rating >= filters.rating);
+      }
+      
+      // Sale items filter (using discount field)
+      if (filters.onSale) {
+        results = results.filter(product => product.discount && product.discount > 0);
+      }
+      
+      // New arrivals filter
+      if (filters.newArrivals) {
+        results = results.filter(product => product.isNew);
+      }
+      
+      results = sortProducts(results, sortOption);
+      
+      setFilteredProducts(results);
+    }, [filters, sortOption, category, products]);
   
   const handleFilterChange = (newFilters: any) => {
     setFilters(newFilters);
   };
   
-  const sortProducts = (products: typeof AGRICULTURAL_PRODUCTS, option: string) => {
+  const sortProducts = (products: Product[], option: string): Product[] => {
     const sorted = [...products];
     
     switch (option) {
@@ -246,8 +260,10 @@ const Page: React.FC = () => {
       case 'rating':
         return sorted.sort((a, b) => b.rating - a.rating);
       case 'newest':
-        return sorted.sort((a, b) => (a.isNew === b.isNew) ? 0 : a.isNew ? -1 : 1);
-      default: // 'featured'
+        return sorted.sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      default:
         return sorted;
     }
   };
@@ -260,7 +276,7 @@ const Page: React.FC = () => {
         ...(category ? [{ name: CATEGORY_MAP[category] || 'Category', path: `/shop/${category}` }] : [])
       ]}
       fullWidth
-      className="px-8 md:px-16"
+      className="px-8 md:px-16 w-screen"
     >
       <div className="py-8">
         <div className="container-custom px-4">
@@ -326,16 +342,18 @@ const Page: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {filteredProducts.map((product) => (
                     <ProductCard
-                      key={product.id}
-                      id={product.id}
-                      name={product.name}
-                      price={product.price}
-                      image={product.image}
-                      category={product.category}
-                      rating={product.rating}
-                      isNew={product.isNew}
-                      isSale={product.isSale}
-                    />
+                    className="bg-card text-card-foreground"
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    image={product.productimg?.[0]?.url || '/placeholder-product.jpg'}
+                    category={product.Category}
+                    rating={product.rating}
+                    isNew={product.isNew}
+                    isSale={!!product.discount}
+                    slug={product.slug}
+                  />
                   ))}
                 </div>
               ) : (

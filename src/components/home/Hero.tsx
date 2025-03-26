@@ -20,7 +20,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
     >
       <div className="absolute opacity-0 inset-0 z-0 opacit">
         <div className="absolute inset-0" style={{ 
-          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23176D45' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23176D45' fillOpacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
           backgroundSize: "60px 60px",
         }} />
       </div>
@@ -58,7 +58,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
           </div>
           
           <div className="order-1 lg:order-2 relative">
-            <div className="aspect-[4/3] relative rounded-2xl overflow-hidden bg-muted">
+            <div className="aspect-[4/3] relative overflow-hidden bg-muted">
               <PlaceholderImage 
                 src="https://images.unsplash.com/photo-1523741543316-beb7fc7023d8"
                 alt="Farmer inspecting crops"

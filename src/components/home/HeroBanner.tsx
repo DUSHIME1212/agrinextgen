@@ -1,20 +1,21 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib";
+import PlaceholderImage from "../ui/PlaceholderImage";
 
 const HeroBanner = ({ className }: { className?: string }) => {
   return (
     <section
       className={cn(
-        "border-y border-border bg-primary/5 py-16 md:py-24",
+        "border-y border-border bg-gradient-to-b from-primary/20 backdrop-blur-xl to-primary-foreground z-10  py-16 md:py-24",
         className,
       )}
     >
-      <div className="container-custom">
+      <div className="">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <div>
-            <div className="relative aspect-square overflow-hidden rounded-2xl">
-              <img
+            <div className="relative aspect-square overflow-hidden">
+              <PlaceholderImage
                 src="https://i.pinimg.com/736x/4b/8e/9c/4b8e9caee0ce9c64589c09476da9d86c.jpg"
                 alt="Farmer harvesting crops"
                 className="h-full w-full object-cover"
@@ -40,7 +41,9 @@ const HeroBanner = ({ className }: { className?: string }) => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xl font-semibold">20+ Years</div>
+                    <div className="text-xl font-semibold">
+                      Small Scale Farming
+                    </div>
                     <div className="text-muted-foreground">
                       Agricultural expertise
                     </div>
@@ -55,7 +58,7 @@ const HeroBanner = ({ className }: { className?: string }) => {
               Why Choose Us
             </div>
 
-            <h1 className="font-bold tracking-tight">
+            <h1 className="font-bold text-3xl tracking-tight">
               Trusted Agricultural Partner
             </h1>
 

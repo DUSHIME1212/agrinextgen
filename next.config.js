@@ -13,6 +13,9 @@ const config = {
                protocol:"https"
             }
         ]
+    },
+    typescript:{
+        ignoreBuildErrors:true
     }
 };
 

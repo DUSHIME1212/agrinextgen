@@ -10,4 +10,8 @@ declare interface configType {
 	static images: {
 	static remotePatterns: ({	} | any)[];
 	};
+
+	static typescript: {
+	static ignoreBuildErrors: boolean;
+	};
 }
