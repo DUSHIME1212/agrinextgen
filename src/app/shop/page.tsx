@@ -151,7 +151,7 @@ const CATEGORY_MAP: Record<string, string> = {
 const Page: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const { category } = useParams<{category?: string}>();
-  const [filters, setFilters] = useState<any>({
+  const [filters, setFilters] = useState<aRW>({
     search: '',
     categories: category ? ['category-' + category] : [],
     brands: [],
@@ -245,7 +245,7 @@ const Page: React.FC = () => {
       setFilteredProducts(results);
     }, [filters, sortOption, category, products]);
   
-  const handleFilterChange = (newFilters: any) => {
+  const handleFilterChange = (newFilters: aRW) => {
     setFilters(newFilters);
   };
   

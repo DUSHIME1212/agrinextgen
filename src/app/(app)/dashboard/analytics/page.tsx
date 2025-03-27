@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   AreaChart,
   Area,
@@ -48,6 +48,7 @@ const page = () => {
     });
 
   return (
+    <Suspense>
     <div className="p-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Sales Analytics</h1>
@@ -217,7 +218,7 @@ const page = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </div></Suspense>
   );
 };
 

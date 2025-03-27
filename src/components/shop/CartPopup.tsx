@@ -87,7 +87,7 @@ const CartPopup: React.FC<CartPopupProps> = ({
             <ShoppingCart size={48} className="text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
             <p className="text-muted-foreground mb-4 text-center">
-              Looks like you haven't added anything to your cart yet.
+              Looks like you haven't added aRWthing to your cart yet.
             </p>
             <SheetClose asChild>
               <Button asChild>

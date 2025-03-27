@@ -17,13 +17,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { loginUser, registerCustomer, registerSeller, checkAuthStatus } from "@/redux/slices/authSlice"
 
 const customerSignInSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  identifier: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
 })
 
 const customerSignUpSchema = z
   .object({
-    fullName: z.string().min(2, { message: "Full name must be at least 2 characters" }),
+    username: z.string().min(2, { message: "Full name must be at least 2 characters" }),
     email: z.string().email({ message: "Please enter a valid email address" }),
     password: z.string().min(8, { message: "Password must be at least 8 characters" }),
     confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
@@ -34,7 +34,7 @@ const customerSignUpSchema = z
   })
 
 const sellerSignInSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  identifier: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
 })
 
@@ -96,7 +96,7 @@ const Page: React.FC = () => {
   const customerSignInForm = useForm<CustomerSignInValues>({
     resolver: zodResolver(customerSignInSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   })
@@ -104,7 +104,7 @@ const Page: React.FC = () => {
   const customerSignUpForm = useForm<CustomerSignUpValues>({
     resolver: zodResolver(customerSignUpSchema),
     defaultValues: {
-      fullName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -114,7 +114,7 @@ const Page: React.FC = () => {
   const sellerSignInForm = useForm<SellerSignInValues>({
     resolver: zodResolver(sellerSignInSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   })
@@ -146,10 +146,10 @@ const Page: React.FC = () => {
     }
   }
 
-  // Handle customer sign up
+  // Done
   async function onCustomerSignUpSubmit(values: CustomerSignUpValues) {
-    const { confirmPassword, fullName, ...rest } = values
-    const userData = { name: fullName, ...rest }
+    const { confirmPassword, username, ...rest } = values
+    const userData = { username, ...rest }
 
     const resultAction = await dispatch(registerCustomer(userData))
 
@@ -161,7 +161,7 @@ const Page: React.FC = () => {
         </div>,
       )
       setAuthMode("signin")
-      customerSignInForm.setValue("email", values.email)
+      customerSignInForm.setValue("identifier", values.email)
     }
   }
 
@@ -194,11 +194,11 @@ const Page: React.FC = () => {
         </div>,
       )
       setAuthMode("signin")
-      sellerSignInForm.setValue("email", values.email)
+      sellerSignInForm.setValue("identifier", values.email)
     }
   }
 
-  // Reset password visibility when switching tabs or auth modes
+
   useEffect(() => {
     setShowPassword(false)
     setShowConfirmPassword(false)
@@ -215,9 +215,8 @@ const Page: React.FC = () => {
         <h1 className="text-3xl font-bold mb-8 text-center">Account</h1>
 
         <Tabs defaultValue="customer" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 mb-8">
+          <TabsList className="grid w-full grid-cols-1 mb-8">
             <TabsTrigger value="customer">Customer</TabsTrigger>
-            <TabsTrigger value="seller">Seller</TabsTrigger>
           </TabsList>
 
           <TabsContent value="customer">
@@ -244,7 +243,7 @@ const Page: React.FC = () => {
                   <form onSubmit={customerSignInForm.handleSubmit(onCustomerSignInSubmit)} className="space-y-6">
                     <FormField
                       control={customerSignInForm.control}
-                      name="email"
+                      name="identifier"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
@@ -301,12 +300,12 @@ const Page: React.FC = () => {
                   <form onSubmit={customerSignUpForm.handleSubmit(onCustomerSignUpSubmit)} className="space-y-4">
                     <FormField
                       control={customerSignUpForm.control}
-                      name="fullName"
+                      name="username"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder="DUSHIME Aime" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -425,7 +424,7 @@ const Page: React.FC = () => {
                   <form onSubmit={sellerSignInForm.handleSubmit(onSellerSignInSubmit)} className="space-y-6">
                     <FormField
                       control={sellerSignInForm.control}
-                      name="email"
+                      name="identifier"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
@@ -500,7 +499,7 @@ const Page: React.FC = () => {
                         <FormItem>
                           <FormLabel>Contact Person</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder="DUSHIME Aime" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -526,7 +525,7 @@ const Page: React.FC = () => {
                         <FormItem>
                           <FormLabel>Phone Number</FormLabel>
                           <FormControl>
-                            <Input placeholder="(123) 456-7890" {...field} />
+                            <Input placeholder="+ 250 782 454 192" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

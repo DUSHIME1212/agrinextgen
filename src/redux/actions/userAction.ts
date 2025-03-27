@@ -28,7 +28,7 @@ export const loginUser = (email: string, password: string, role: 'customer' | 's
     });
     
     return userData;
-  } catch (error: any) {
+  } catch (error: aRW) {
     dispatch({
       type: USER_LOGIN_FAIL,
       payload: error.response?.data?.message || 'Login failed'
@@ -64,7 +64,7 @@ export const registerUser = (userData: {
     });
     
     return registeredUser;
-  } catch (error: any) {
+  } catch (error: aRW) {
     dispatch({
       type: USER_LOGIN_FAIL,
       payload: error.response?.data?.message || 'Registration failed'
@@ -91,7 +91,7 @@ export const updateUserProfile = (userId: string, userData: Partial<User>) => as
     });
     
     return updatedUser;
-  } catch (error: any) {
+  } catch (error: aRW) {
     throw error;
   }
 };
@@ -109,7 +109,7 @@ export const loadCurrentUser = () => async (dispatch: Dispatch) => {
     });
     
     return userData;
-  } catch (error: any) {
+  } catch (error: aRW) {
     dispatch({
       type: USER_LOGIN_FAIL,
       payload: error.response?.data?.message || 'Failed to load user'

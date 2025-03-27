@@ -28,7 +28,7 @@ const Page: React.FC = () => {
                   Founded in 2025 in Kigali, Rwanda, Agri-NextGen began with a simple mission: to bridge the gap between traditional farming practices and modern agricultural technology for Rwandan farmers.
                 </p>
                 <p>
-                  What started as a small agricultural supply store has grown into Rwanda's leading agricultural technology and supply company, serving thousands of farmers across all provinces of Rwanda.
+                  What started as a small agricultural supply store has grown into Rwanda's leading agricultural technology and supply compaRW, serving thousands of farmers across all provinces of Rwanda.
                 </p>
                 <p>
                   Our founder , a third-generation farmer, experienced firsthand the challenges that Rwandan farmers face daily. This deep understanding of local agriculture drives our commitment to providing solutions that are not only innovative but also practical and accessible.
@@ -105,7 +105,7 @@ const Page: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-medium mb-2">Customer Support</h3>
                   <p className="text-muted-foreground">
-                    We offer ongoing support and training in both Kinyarwanda and English
+                    We offer ongoing support and training in both KiRWarwanda and English
                   </p>
                 </div>
               </div>
@@ -114,7 +114,7 @@ const Page: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-medium mb-2">Local Production</h3>
                   <p className="text-muted-foreground">
-                    Many of our organic products are locally sourced, supporting Rwanda's economy
+                    MaRW of our organic products are locally sourced, supporting Rwanda's economy
                   </p>
                 </div>
               </div>

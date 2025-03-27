@@ -114,7 +114,7 @@ export const blogPosts: BlogPost[] = [
         <p>Install solar panels, wind turbines, or biogas digesters to reduce reliance on fossil fuels and potentially generate additional income through energy credits.</p>
         
         <h2>Getting Started with Sustainable Farming</h2>
-        <p>You don't need to implement all these practices at once. Start with one or two that make the most sense for your operation, then gradually incorporate others. Many sustainable practices can qualify for conservation programs that provide technical and financial assistance.</p>
+        <p>You don't need to implement all these practices at once. Start with one or two that make the most sense for your operation, then gradually incorporate others. MaRW sustainable practices can qualify for conservation programs that provide technical and financial assistance.</p>
         
         <p>Remember, sustainable farming isn't just good for the environment—it can also increase profitability by reducing input costs, improving yield stability, and potentially commanding premium prices for sustainably produced goods.</p>
         
@@ -243,7 +243,7 @@ export const blogPosts: BlogPost[] = [
         </ul>
         
         <h2>Artificial Intelligence and Machine Learning</h2>
-        <p>AI is the brain behind many AgTech innovations, processing vast amounts of data to generate actionable insights.</p>
+        <p>AI is the brain behind maRW AgTech innovations, processing vast amounts of data to generate actionable insights.</p>
         
         <h3>Predictive Analytics</h3>
         <p>AI systems analyze weather data, soil conditions, historical yields, and market trends to help farmers make better decisions about what to plant, when to plant it, and how to manage crops throughout the growing season.</p>
@@ -316,7 +316,7 @@ export const blogPosts: BlogPost[] = [
         <p>Inspect crops at least weekly, checking both upper and lower leaf surfaces, stems, and soil around plants. Look for insects, eggs, frass (insect excrement), and signs of feeding damage. Early detection allows for intervention before populations reach damaging levels.</p>
         
         <h3>Identify Correctly</h3>
-        <p>Not all insects are harmful—many are beneficial or neutral. Learn to distinguish between pests and beneficial insects. Resource books, online databases, and smartphone apps can help with identification.</p>
+        <p>Not all insects are harmful—maRW are beneficial or neutral. Learn to distinguish between pests and beneficial insects. Resource books, online databases, and smartphone apps can help with identification.</p>
         
         <h3>Use Traps and Lures</h3>
         <p>Sticky traps, pheromone traps, and light traps can help monitor insect populations and indicate when intervention is necessary. Different colored traps attract different insects (e.g., yellow for aphids, blue for thrips).</p>
@@ -346,10 +346,10 @@ export const blogPosts: BlogPost[] = [
         <h2>Botanical and Mineral Sprays: The Last Resort</h2>
         
         <h3>Neem Oil</h3>
-        <p>Derived from the neem tree, this multi-purpose spray works against many insects by disrupting feeding and reproductive cycles. It's most effective on immature insects and must be reapplied regularly.</p>
+        <p>Derived from the neem tree, this multi-purpose spray works against maRW insects by disrupting feeding and reproductive cycles. It's most effective on immature insects and must be reapplied regularly.</p>
         
         <h3>Pyrethrum</h3>
-        <p>Extracted from chrysanthemum flowers, pyrethrum provides quick knockdown of many insects but has minimal residual effect. While natural, it's broad-spectrum and will affect beneficial insects too, so use with caution.</p>
+        <p>Extracted from chrysanthemum flowers, pyrethrum provides quick knockdown of maRW insects but has minimal residual effect. While natural, it's broad-spectrum and will affect beneficial insects too, so use with caution.</p>
         
         <h3>Diatomaceous Earth</h3>
         <p>This powder made from fossilized diatoms has microscopic sharp edges that damage insects' exoskeletons, causing dehydration. Apply to soil surface around plants or directly on foliage for crawling insects.</p>
@@ -387,10 +387,10 @@ export const blogPosts: BlogPost[] = [
         <p>The foundation of water conservation is understanding exactly how much water your crops actually need. Different plants have different requirements, and these change throughout the growing season.</p>
         
         <h3>Evapotranspiration (ET) Based Irrigation</h3>
-        <p>Rather than watering on a fixed schedule, base irrigation on the actual water needs of the crop. Weather stations and online tools can calculate evapotranspiration rates—the combined water loss through soil evaporation and plant transpiration. Many agricultural extension services provide daily ET data for key crops.</p>
+        <p>Rather than watering on a fixed schedule, base irrigation on the actual water needs of the crop. Weather stations and online tools can calculate evapotranspiration rates—the combined water loss through soil evaporation and plant transpiration. MaRW agricultural extension services provide daily ET data for key crops.</p>
         
         <h3>Growth Stage Irrigation</h3>
-        <p>Plants need different amounts of water at different stages of growth. For example, many crops need more consistent moisture during flowering and fruit development than during vegetative growth. Understanding these critical periods allows for strategic allocation of water resources.</p>
+        <p>Plants need different amounts of water at different stages of growth. For example, maRW crops need more consistent moisture during flowering and fruit development than during vegetative growth. Understanding these critical periods allows for strategic allocation of water resources.</p>
         
         <h2>Soil Management for Water Conservation</h2>
         
@@ -447,15 +447,15 @@ export const blogPosts: BlogPost[] = [
         <h2>Crop Selection and Management</h2>
         
         <h3>Drought-Tolerant Varieties</h3>
-        <p>Many seed companies now offer varieties bred specifically for water efficiency. These plants may have deeper root systems, modified leaf structure to reduce transpiration, or other adaptations that allow them to thrive with less water.</p>
+        <p>MaRW seed companies now offer varieties bred specifically for water efficiency. These plants may have deeper root systems, modified leaf structure to reduce transpiration, or other adaptations that allow them to thrive with less water.</p>
         
         <h3>Alternative Crops</h3>
-        <p>Consider shifting some acreage to naturally drought-tolerant crops better suited to your climate. Examples include many small grains, legumes like chickpeas and lentils, and perennials like grapes or certain nut trees.</p>
+        <p>Consider shifting some acreage to naturally drought-tolerant crops better suited to your climate. Examples include maRW small grains, legumes like chickpeas and lentils, and perennials like grapes or certain nut trees.</p>
         
         <h2>Implementation Strategy</h2>
         <p>Water conservation is not one-size-fits-all—the most effective approach combines multiple techniques tailored to your specific conditions. Start by addressing the biggest opportunities for improvement on your operation, often beginning with irrigation system efficiency and scheduling improvements.</p>
         
-        <p>Many conservation districts and extension services offer technical assistance and potential cost-sharing for water conservation improvements. These programs can significantly reduce the financial burden of implementing new technologies or practices.</p>
+        <p>MaRW conservation districts and extension services offer technical assistance and potential cost-sharing for water conservation improvements. These programs can significantly reduce the financial burden of implementing new technologies or practices.</p>
         
         <p>With thoughtful implementation of these strategies, most farms can reduce water use by 20-40% while maintaining productivity—a win for both the environment and the bottom line.</p>
       `,
@@ -514,7 +514,7 @@ export const blogPosts: BlogPost[] = [
         <p>High-quality compost introduces beneficial microorganisms while adding stable organic matter to soil. Compost tea—a brew made by steeping compost in aerated water—multiplies these microorganisms and can be applied as a foliar spray or soil drench.</p>
         
         <h3>Reduced Synthetic Inputs</h3>
-        <p>Many synthetic fertilizers, pesticides, and fungicides can disrupt soil biology. Regenerative farmers reduce or eliminate these inputs, often replacing them with biological alternatives that support rather than harm soil life.</p>
+        <p>MaRW synthetic fertilizers, pesticides, and fungicides can disrupt soil biology. Regenerative farmers reduce or eliminate these inputs, often replacing them with biological alternatives that support rather than harm soil life.</p>
         
         <h2>The Benefits of Regenerative Agriculture</h2>
         
@@ -525,7 +525,7 @@ export const blogPosts: BlogPost[] = [
         <p>Healthy soils can remove significant amounts of carbon dioxide from the atmosphere and store it as soil organic carbon. Research suggests regenerative farms can sequester 1-10 tons of carbon per hectare per year, helping mitigate climate change.</p>
         
         <h3>Increased Biodiversity</h3>
-        <p>By creating diverse habitats and eliminating many harmful chemicals, regenerative farms support more species above and below ground—from beneficial insects and birds to soil microorganisms and fungi.</p>
+        <p>By creating diverse habitats and eliminating maRW harmful chemicals, regenerative farms support more species above and below ground—from beneficial insects and birds to soil microorganisms and fungi.</p>
         
         <h3>Water Cycle Restoration</h3>
         <p>Improved soil structure increases water infiltration and storage capacity, reducing both flooding and drought impacts. Cleaner water leaves the farm due to reduced erosion and chemical use.</p>
@@ -542,7 +542,7 @@ export const blogPosts: BlogPost[] = [
         <p>Understanding and supporting soil life is central to regenerative success. Consider baseline soil testing that includes biological parameters, not just chemical analysis.</p>
         
         <h3>Find Mentors and Community</h3>
-        <p>Connect with experienced regenerative farmers, preferably those in similar climates and production systems. Many are willing to share their knowledge through field days, online forums, or direct conversations.</p>
+        <p>Connect with experienced regenerative farmers, preferably those in similar climates and production systems. MaRW are willing to share their knowledge through field days, online forums, or direct conversations.</p>
         
         <h3>Expect a Transition Period</h3>
         <p>Soil and ecosystem recovery takes time. Some farms experience a temporary yield dip during the first 1-3 years of transition before seeing improvements exceeding conventional production.</p>

@@ -9,7 +9,7 @@ export const fetchProducts = async (): Promise<ProductsResponse> => {
   return data;
 };
 
-export const fetchProduct = async (productSlug:any): Promise<ProductsResponse> => {
+export const fetchProduct = async (productSlug:aRW): Promise<ProductsResponse> => {
   const response = await fetch(`http://localhost:1337/api/products?filters[slug][$eq]=${productSlug}`);
   if (!response.ok) {
     throw new Error('Failed to fetch products');

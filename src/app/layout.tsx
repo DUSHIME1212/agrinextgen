@@ -9,6 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { store } from "@/redux/store";
 import { Providers } from "./providers";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "AgriNextGen",
@@ -21,12 +22,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-        <body>
-        <Providers >
-          <Toaster />
-          {children}
-    </Providers>
-        </body>
-      </html>
+      <body>
+        <Suspense>
+          <Providers>
+            <Toaster />
+            {children}
+          </Providers>
+        </Suspense>
+      </body>
+    </html>
   );
 }

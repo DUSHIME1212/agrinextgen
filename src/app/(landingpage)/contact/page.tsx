@@ -62,7 +62,7 @@ const Page: React.FC = () => {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
             <p className="text-lg text-muted-foreground">
-              Get in touch with our team for any questions or support
+              Get in touch with our team for aRW questions or support
             </p>
           </div>
 
@@ -108,7 +108,7 @@ const Page: React.FC = () => {
                         <FormItem>
                           <FormLabel>Your Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder="DUSHIME Aime" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

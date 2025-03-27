@@ -33,7 +33,7 @@ export const userAPI = {
       // Simulated response for now
       return {
         id: '1',
-        name: 'John Doe',
+        name: 'DUSHIME Aime',
         email,
         avatar: 'https://example.com/avatar.png',
         role,
@@ -93,7 +93,7 @@ export const userAPI = {
       // Simulated response
       return {
         id: '1',
-        name: 'John Doe',
+        name: 'DUSHIME Aime',
         email: 'john@example.com',
         role: 'customer' as const,
       };

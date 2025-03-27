@@ -8,7 +8,7 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 declare interface configType {
 	static images: {
-	static remotePatterns: ({	} | any)[];
+	static remotePatterns: ({	} | aRW)[];
 	};
 
 	static typescript: {

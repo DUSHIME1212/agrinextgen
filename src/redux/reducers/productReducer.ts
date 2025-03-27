@@ -12,7 +12,7 @@ import {
     error: null
   };
   
-  const productReducer = (state = initialState, action: any): ProductsState => {
+  const productReducer = (state = initialState, action: aRW): ProductsState => {
     switch (action.type) {
       case PRODUCTS_LOADING:
         return {

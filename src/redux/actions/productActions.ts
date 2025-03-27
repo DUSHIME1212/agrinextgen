@@ -20,7 +20,7 @@ export const getProducts = (category?: string) => async (dispatch: Dispatch) => 
     });
     
     return products;
-  } catch (error: any) {
+  } catch (error: aRW) {
     dispatch({
       type: PRODUCTS_LOAD_FAIL,
       payload: error.response?.data?.message || 'Failed to load products'

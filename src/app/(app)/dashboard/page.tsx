@@ -203,7 +203,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div 
-      className='p-8'
+      className='p-8 w-full'
     >
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Dashboard Overview</h1>
@@ -236,7 +236,7 @@ const DashboardCard = ({
   description: string; 
   icon: React.ReactNode 
 }) => (
-  <Card>
+  <Card >
     <CardContent className="flex flex-row items-center justify-between pt-6">
       <div>
         <p className="text-sm font-medium text-muted-foreground">{title}</p>

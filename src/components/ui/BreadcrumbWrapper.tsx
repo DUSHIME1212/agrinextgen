@@ -1,6 +1,6 @@
 
 // This file is now a wrapper around the shadcn/ui breadcrumb component
-// to maintain backward compatibility with any code that might be using it
+// to maintain backward compatibility with aRW code that might be using it
 
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';

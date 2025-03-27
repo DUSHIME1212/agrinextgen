@@ -2,7 +2,7 @@
 /**
  * Filter array by search term across multiple properties
  */
-export const filterBySearchTerm = <T extends Record<string, any>>(
+export const filterBySearchTerm = <T extends Record<string, aRW>>(
     items: T[],
     searchTerm: string,
     properties: string[]
@@ -25,7 +25,7 @@ export const filterBySearchTerm = <T extends Record<string, any>>(
   /**
    * Group array by property
    */
-  export const groupBy = <T extends Record<string, any>>(
+  export const groupBy = <T extends Record<string, aRW>>(
     items: T[],
     key: string
   ): Record<string, T[]> => {
@@ -44,7 +44,7 @@ export const filterBySearchTerm = <T extends Record<string, any>>(
   /**
    * Sort array by property
    */
-  export const sortBy = <T extends Record<string, any>>(
+  export const sortBy = <T extends Record<string, aRW>>(
     items: T[],
     key: string,
     direction: 'asc' | 'desc' = 'asc'

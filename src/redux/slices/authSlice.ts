@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios"
 
-const API_URL = "http://localhost:5000/api/v1"
+const API_URL = "http://localhost:1337"
 
 // Types
 interface User {
@@ -38,7 +38,7 @@ const getToken = () => {
   if (typeof window === "undefined") return null
 
   // Try to get from localStorage first
-  const lsToken = localStorage.getItem("token")
+  const lsToken = localStorage.getItem("jwt")
   if (lsToken) return lsToken
 
   // If not in localStorage, try cookies
@@ -78,13 +78,18 @@ const initialState: AuthState = {
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  async (credentials: { identifier: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, credentials)
-      const { token, user } = response.data.data 
+      const response = await axios.post(`${API_URL}/api/auth/local`, credentials)
+      console.log(response);
+      
+      const { token, user } = response.data 
 
-      localStorage.setItem("token", response.data)
-    //   alert(response.data)
+      console.log(token);
+      
+
+      localStorage.setItem("token", response.data.jwt)
+
       console.log(response.data);
       
       setCookie("token", response.data.token)
@@ -92,25 +97,25 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(response.data))
 
       return { token, user }
-    } catch (error: any) {
+    } catch (error:any) {
       return rejectWithValue(error.response?.data?.message || "Login failed")
     }
   },
 )
 
-// Customer registration
+// Customer registration Done
 export const registerCustomer = createAsyncThunk(
   "auth/registerCustomer",
   async (
     userData: {
-      name: string
+      username: string
       email: string
       password: string
     },
     { rejectWithValue },
   ) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register/customer`, userData)
+      const response = await axios.post(`${API_URL}/api/auth/local/register`, userData)
       return response.data
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Registration failed")

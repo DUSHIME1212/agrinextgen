@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
     <footer className="bg-background border-border lg:px-32 border-t p-16">
       <div className="container-custom">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Company Info */}
+          {/* CompaRW Info */}
           <div>
             <Link href="/" className="mb-6 inline-flex gap-2 items-center">
             <Logo className="size-9"/>

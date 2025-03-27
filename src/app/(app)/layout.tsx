@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarFooter,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
 import DashBoardLayout from "@/components/DashBoardLayout";
@@ -35,12 +36,12 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ProtectedRoute allowedUserTypes={["customer", "seller"]}>
-      <SidebarProvider className="bg-card">
+      <SidebarProvider className="bg-card w-screen">
         <DashBoardLayout />
-        <main className="w-full">
-          <div className="" />
+          <main className="w-full">
+          <SidebarTrigger />
           {children}
-        </main>
+          </main>
       </SidebarProvider>
     </ProtectedRoute>
   );

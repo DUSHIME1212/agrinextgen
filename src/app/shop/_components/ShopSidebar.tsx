@@ -58,7 +58,7 @@ const RATINGS = [5, 4, 3, 2, 1];
 
 interface ShopSidebarProps {
   className?: string;
-  onFilterChange?: (filters: any) => void;
+  onFilterChange?: (filters: aRW) => void;
 }
 
 const ShopSidebar: React.FC<ShopSidebarProps> = ({ 
@@ -77,7 +77,7 @@ const ShopSidebar: React.FC<ShopSidebarProps> = ({
     newArrivals: false,
   });
 
-  const updateFilters = (key: string, value: any) => {
+  const updateFilters = (key: string, value: aRW) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     if (onFilterChange) {

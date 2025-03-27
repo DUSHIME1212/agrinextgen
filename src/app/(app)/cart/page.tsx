@@ -1,3 +1,5 @@
+"use client"
+
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,39 +9,61 @@ import { useAuth } from "@/hooks/useAuth";
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 const Page: React.FC = () => {
   const navigate = useRouter();
+  
+  // Hardcoded cart data
+  const [Cart, SetCart] = useState([
+    {
+      id: '1',
+      name: 'Organic Avocado Oil',
+      image: 'https://res.cloudinary.com/dzybbmiu5/image/upload/v1742947169/small_vector_avocado_leaf_sliced_half_motion_208581_1739_1_e3052935a6.jpg',
+      price: 30,
+      quantity: 2,
+      sellerId: 'Don',
+      slug: 'sample-product-1',
+    },
+    {
+      id: '2',
+      name: 'Lavender Essential Oil',
+      image: 'https://res.cloudinary.com/dzybbmiu5/image/upload/v1742947170/thumbnail_realistic_avocado_vector_204950_113_1bdc139ad9.jpg',
+      price: 20,
+      quantity: 1,
+      sellerId: 'Aime ',
+      slug: 'sample-product-2',
+    },
+  ]);
 
-  const {isAuthenticated} = useAuth()
+  const { isAuthenticated, user } = useAuth();
 
   const handleUpdateQuantity = (id: string, currentQuantity: number, amount: number) => {
     const newQuantity = currentQuantity + amount;
     if (newQuantity < 1) return;
+    SetCart(prevCart => 
+      prevCart.map(item => 
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
   };
 
   const handleRemoveItem = (id: string, name: string) => {
-    toast.success(
-      `You removed ${name} from your cart.`
-    );
+    SetCart(prevCart => prevCart.filter(item => item.id !== id));
+    toast.success(`You removed ${name} from your cart.`);
   };
 
   const handleClearCart = () => {
-    // dispatch(clearCart());
-    toast.success(
-      "Your cart has been cleared."
-    );
+    SetCart([]);
+    toast.success("Your cart has been cleared.");
   };
 
   const handleCheckout = () => {
     if (isAuthenticated) {
       navigate.push('/checkout');
     } else {
-      toast(
-        "Please login to checkout."
-      );
+      toast("Please login to checkout.");
       navigate.push('/auth');
     }
   };
@@ -53,21 +77,19 @@ const Page: React.FC = () => {
 
   return (
     <Layout
-      customBreadcrumbPaths={[
-        { name: 'Home', path: '/' },
-        { name: 'Cart', path: '/cart' }
-      ]}
+      customBreadcrumbPaths={[{ name: 'Home', path: '/' }, { name: 'Cart', path: '/cart' }]}
+      className="min-h-screen"
     >
       <div className="py-12 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
 
-        {items.length === 0 ? (
+        {Cart.length === 0 ? (
           <div className="text-center py-16 space-y-6">
             <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
             <div>
               <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
               <p className="text-muted-foreground mb-6">
-                Looks like you haven't added anything to your cart yet.
+                Looks like you haven't added aRWthing to your cart yet.
               </p>
               <Button asChild>
                 <Link href="/shop">Continue Shopping</Link>
@@ -80,12 +102,8 @@ const Page: React.FC = () => {
               <Card>
                 <CardHeader>
                   <div className="flex justify-between items-center">
-                    <CardTitle>Cart Items ({items.length})</CardTitle>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={handleClearCart}
-                    >
+                    <CardTitle>Cart Items ({Cart.length})</CardTitle>
+                    <Button variant="outline" size="sm" onClick={handleClearCart}>
                       Clear Cart
                     </Button>
                   </div>
@@ -102,19 +120,19 @@ const Page: React.FC = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {items.map((item) => (
+                      {Cart.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
                             <div className="flex items-center space-x-4">
                               <div className="h-16 w-16 rounded overflow-hidden bg-secondary">
-                                <img 
-                                  src={item.image} 
-                                  alt={item.name} 
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
                                   className="h-full w-full object-cover"
                                 />
                               </div>
                               <div>
-                                <Link 
+                                <Link
                                   href={`/product/${item.slug}`}
                                   className="font-medium hover:underline line-clamp-1"
                                 >
@@ -185,7 +203,7 @@ const Page: React.FC = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>{formatCurrency(total)}</span>
+                    <span>{formatCurrency(Cart.reduce((total, item) => total + item.price * item.quantity, 0))}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
@@ -198,14 +216,14 @@ const Page: React.FC = () => {
                   <Separator />
                   <div className="flex justify-between font-medium">
                     <span>Total</span>
-                    <span>{formatCurrency(total)}</span>
+                    <span>{formatCurrency(Cart.reduce((total, item) => total + item.price * item.quantity, 0))}</span>
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button 
-                    className="w-full" 
+                  <Button
+                    className="w-full"
                     onClick={handleCheckout}
-                    disabled={items.length === 0}
+                    disabled={Cart.length === 0}
                   >
                     Proceed to Checkout
                     <ArrowRight className="ml-2 h-4 w-4" />

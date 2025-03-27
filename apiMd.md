@@ -29,14 +29,14 @@ Authorization: Bearer {token}
 - **Request Body**:
   ```json
   {
-    "fullName": "John Doe",
+    "fullName": "DUSHIME Aime",
     "email": "john@example.com",
     "password": "securepassword",
     "confirmPassword": "securepassword",
     "role": "customer", // "customer" or "seller"
     // If seller, additional fields:
     "businessName": "Green Farm",
-    "contactPerson": "John Doe",
+    "contactPerson": "DUSHIME Aime",
     "phone": "+1234567890"
   }
   ```
@@ -45,7 +45,7 @@ Authorization: Bearer {token}
   {
     "user": {
       "id": "user123",
-      "fullName": "John Doe",
+      "fullName": "DUSHIME Aime",
       "email": "john@example.com",
       "role": "customer",
       "createdAt": "2023-06-01T12:00:00Z",
@@ -73,7 +73,7 @@ Authorization: Bearer {token}
   {
     "user": {
       "id": "user123",
-      "fullName": "John Doe",
+      "fullName": "DUSHIME Aime",
       "email": "john@example.com",
       "role": "customer",
       "createdAt": "2023-06-01T12:00:00Z",
@@ -135,12 +135,12 @@ Authorization: Bearer {token}
   ```json
   {
     "id": "user123",
-    "fullName": "John Doe",
+    "fullName": "DUSHIME Aime",
     "email": "john@example.com",
     "phone": "+1234567890",
     "address": {
       "street": "123 Main St",
-      "city": "Anytown",
+      "city": "ARWtown",
       "state": "State",
       "zipCode": "12345",
       "country": "Country"
@@ -443,7 +443,7 @@ Authorization: Bearer {token}
   {
     "id": "rev456",
     "userId": "user123",
-    "userName": "John Doe",
+    "userName": "DUSHIME Aime",
     "rating": 5,
     "comment": "Excellent product, very fresh!",
     "createdAt": "2023-06-15T14:30:00Z"
@@ -473,7 +473,7 @@ Authorization: Bearer {token}
     ],
     "shippingAddress": {
       "street": "123 Main St",
-      "city": "Anytown",
+      "city": "ARWtown",
       "state": "State",
       "zipCode": "12345",
       "country": "Country"
@@ -513,7 +513,7 @@ Authorization: Bearer {token}
     "total": 17.06,
     "shippingAddress": {
       "street": "123 Main St",
-      "city": "Anytown",
+      "city": "ARWtown",
       "state": "State",
       "zipCode": "12345",
       "country": "Country"
@@ -607,7 +607,7 @@ Authorization: Bearer {token}
     "total": 17.06,
     "shippingAddress": {
       "street": "123 Main St",
-      "city": "Anytown",
+      "city": "ARWtown",
       "state": "State",
       "zipCode": "12345",
       "country": "Country"
@@ -653,7 +653,7 @@ Authorization: Bearer {token}
       "type": "card",
       "details": {
         "cardNumber": "4111111111111111",
-        "cardName": "John Doe",
+        "cardName": "DUSHIME Aime",
         "expiry": "12/25",
         "cvv": "123"
       }
@@ -662,7 +662,7 @@ Authorization: Bearer {token}
     "orderId": "order123",
     "currency": "USD",
     "customerInfo": {
-      "name": "John Doe",
+      "name": "DUSHIME Aime",
       "email": "john@example.com"
     }
   }
@@ -681,7 +681,7 @@ Authorization: Bearer {token}
     "orderId": "order123",
     "currency": "USD",
     "customerInfo": {
-      "name": "John Doe",
+      "name": "DUSHIME Aime",
       "email": "john@example.com"
     }
   }
@@ -748,7 +748,7 @@ Authorization: Bearer {token}
     "recentOrders": [
       {
         "id": "order123",
-        "customerName": "John Doe",
+        "customerName": "DUSHIME Aime",
         "amount": 17.06,
         "date": "2023-06-20T10:00:00Z",
         "status": "processing"

@@ -13,11 +13,11 @@ import {
   };
   
   // Helper function to calculate cart total
-  const calculateTotal = (items: any[]) => {
+  const calculateTotal = (items: aRW[]) => {
     return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   };
   
-  const cartReducer = (state = initialState, action: any): CartState => {
+  const cartReducer = (state = initialState, action: aRW): CartState => {
     switch (action.type) {
       case CART_ADD_ITEM: {
         // Check if item already exists in cart

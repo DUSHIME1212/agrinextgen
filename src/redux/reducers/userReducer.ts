@@ -15,7 +15,7 @@ import {
     error: null
   };
   
-  const userReducer = (state = initialState, action: any): UserState => {
+  const userReducer = (state = initialState, action: aRW): UserState => {
     switch (action.type) {
       case USER_LOADING:
         return {
