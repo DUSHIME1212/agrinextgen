@@ -171,7 +171,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Product details */}
       <Link href={`/product/${slug}`} className="block ">
         <div className="mb-1 text-sm text-muted-foreground">{category}</div>
-        <h3 className="mb-2 line-clamp-2 font-medium transition-colors hover:text-primary">
+        <h3 className="mb-2 line-clamp-2 min-h-20 font-medium transition-colors text-muted-foreground hover:text-primary">
           {name}
         </h3>
 

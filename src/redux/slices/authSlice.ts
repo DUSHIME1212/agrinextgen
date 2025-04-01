@@ -1,16 +1,14 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit"
-import axios from "axios"
-
-const API_URL = "http://localhost:1337"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 // Types
 interface User {
-  id?: string
+  id: string
   email: string
   name?: string
+  role: string
   businessName?: string
   contactPerson?: string
-  role: "customer" | "seller"
+  phoneNumber?: string
 }
 
 interface AuthState {
@@ -18,239 +16,252 @@ interface AuthState {
   token: string | null
   isLoading: boolean
   error: string | null
+  isAuthenticated: boolean
 }
 
-const setCookie = (name: string, value: string, days = 7) => {
-  if (typeof window === "undefined") return
-
-  const expires = new Date()
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`
-}
-
-const removeCookie = (name: string) => {
-  if (typeof window === "undefined") return
-  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
-}
-
-// Helper function to get token from cookies or localStorage
-const getToken = () => {
-  if (typeof window === "undefined") return null
-
-  // Try to get from localStorage first
-  const lsToken = localStorage.getItem("jwt")
-  if (lsToken) return lsToken
-
-  // If not in localStorage, try cookies
-  const cookies = document.cookie.split(";")
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i]?.trim() || ""
-    if (cookie.startsWith("token=")) {
-      return cookie.substring("token=".length, cookie.length)
-    }
+// Get token from localStorage
+const getStoredToken = (): string | null => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("token")
   }
-
   return null
 }
 
-const getUser = (): User | null => {
-  if (typeof window === "undefined") return null
-
-  const userStr = localStorage.getItem("user")
-  if (!userStr) return null
-
-  try {
-    return JSON.parse(userStr)
-  } catch (error) {
-    console.error("Error parsing user from localStorage:", error)
-    return null
-  }
-}
-
-// Initial state
 const initialState: AuthState = {
-  user: typeof window !== "undefined" ? getUser() : null,
-  token: typeof window !== "undefined" ? getToken() : null,
+  user: null,
+  token: getStoredToken(),
   isLoading: false,
   error: null,
+  isAuthenticated: false,
 }
 
-
+// Async thunks
 export const loginUser = createAsyncThunk(
-  "auth/login",
+  "auth/loginUser",
   async (credentials: { identifier: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/local`, credentials)
-      console.log(response);
-      
-      const { token, user } = response.data 
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      })
 
-      console.log(token);
-      
+      if (!response.ok) {
+        const error = await response.json()
+        return rejectWithValue(error.error || "Failed to login")
+      }
 
-      localStorage.setItem("token", response.data.jwt)
-
-      console.log(response.data);
-      
-      setCookie("token", response.data.token)
-
-      localStorage.setItem("user", JSON.stringify(response.data))
-
-      return { token, user }
-    } catch (error:any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed")
+      const data = await response.json()
+      // Store token in localStorage
+      localStorage.setItem("token", data.token)
+      return data
+    } catch (error) {
+      return rejectWithValue("An error occurred during login")
     }
   },
 )
 
-// Customer registration Done
 export const registerCustomer = createAsyncThunk(
   "auth/registerCustomer",
-  async (
-    userData: {
-      username: string
-      email: string
-      password: string
-    },
-    { rejectWithValue },
-  ) => {
+  async (userData: { username: string; email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/local/register`, userData)
-      return response.data
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Registration failed")
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userData.username,
+          email: userData.email,
+          password: userData.password,
+          role: "CUSTOMER",
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        return rejectWithValue(error.error || "Failed to register")
+      }
+
+      const data = await response.json()
+      // Store token in localStorage
+      localStorage.setItem("token", data.token)
+      return data
+    } catch (error) {
+      return rejectWithValue("An error occurred during registration")
     }
   },
 )
 
-// Seller registration
 export const registerSeller = createAsyncThunk(
   "auth/registerSeller",
   async (
     userData: {
-      email: string
-      password: string
       businessName: string
       contactPerson: string
+      email: string
       phoneNumber: string
+      password: string
     },
     { rejectWithValue },
   ) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register/seller`, userData)
-      return response.data
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Registration failed")
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userData.contactPerson,
+          email: userData.email,
+          password: userData.password,
+          role: "SELLER",
+          businessName: userData.businessName,
+          contactPerson: userData.contactPerson,
+          phoneNumber: userData.phoneNumber,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        return rejectWithValue(error.error || "Failed to register")
+      }
+
+      const data = await response.json()
+      // Store token in localStorage
+      localStorage.setItem("token", data.token)
+      return data
+    } catch (error) {
+      return rejectWithValue("An error occurred during registration")
     }
   },
 )
 
-// Logout
-export const logout = createAsyncThunk("auth/logout", async () => {
-  localStorage.removeItem("token")
-  localStorage.removeItem("user")
-  removeCookie("token")
-  return null
+export const checkAuthStatus = createAsyncThunk("auth/checkAuthStatus", async (_, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem("token")
+
+    if (!token) {
+      return rejectWithValue("No token found")
+    }
+
+    const response = await fetch("/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      localStorage.removeItem("token")
+      return rejectWithValue("Session expired")
+    }
+
+    const data = await response.json()
+    return { user: data.user, token }
+  } catch (error) {
+    localStorage.removeItem("token")
+    return rejectWithValue("Failed to verify authentication")
+  }
 })
 
-// Check auth status
-export const checkAuthStatus = createAsyncThunk("auth/checkStatus", async (_, { getState, rejectWithValue }) => {
-  
-
-    try {
-        const token = getToken();
-        const user = getUser();
-        
-        if (!token || !user) {
-          return rejectWithValue("No active session found");
-        }
-        
-        
-        return { user, token };
-        
-      } catch (error: any) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user"); 
-        removeCookie("token");
-        
-        return rejectWithValue(error.message || "Authentication check failed");
-      }
+export const logoutUser = createAsyncThunk("auth/logoutUser", async (_, { rejectWithValue }) => {
+  try {
+    localStorage.removeItem("token")
+    return null
+  } catch (error) {
+    return rejectWithValue("Failed to logout")
+  }
 })
 
-// Auth slice
+// Slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    clearError: (state) => {
+    clearAuthError: (state) => {
       state.error = null
     },
   },
   extraReducers: (builder) => {
-    // Login
-    builder.addCase(loginUser.pending, (state) => {
-      state.isLoading = true
-      state.error = null
-    })
-    builder.addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
-      state.isLoading = false
-      state.user = action.payload.user
-      state.token = action.payload.token
-    })
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.isLoading = false
-      state.error = action.payload as string
-    })
+    builder
+      // Login
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.user = action.payload.user
+        state.token = action.payload.token
+        state.isAuthenticated = true
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+      })
 
-    // Customer Registration
-    builder.addCase(registerCustomer.pending, (state) => {
-      state.isLoading = true
-      state.error = null
-    })
-    builder.addCase(registerCustomer.fulfilled, (state, action: PayloadAction<any>) => {
-      state.isLoading = false
-    })
-    builder.addCase(registerCustomer.rejected, (state, action) => {
-      state.isLoading = false
-      state.error = action.payload as string
-    })
+      // Register Customer
+      .addCase(registerCustomer.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(registerCustomer.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.user = action.payload.user
+        state.token = action.payload.token
+        state.isAuthenticated = true
+      })
+      .addCase(registerCustomer.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+      })
 
-    // Seller Registration
-    builder.addCase(registerSeller.pending, (state) => {
-      state.isLoading = true
-      state.error = null
-    })
-    builder.addCase(registerSeller.fulfilled, (state, action: PayloadAction<any>) => {
-      state.isLoading = false
-    })
-    builder.addCase(registerSeller.rejected, (state, action) => {
-      state.isLoading = false
-      state.error = action.payload as string
-    })
+      // Register Seller
+      .addCase(registerSeller.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(registerSeller.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.user = action.payload.user
+        state.token = action.payload.token
+        state.isAuthenticated = true
+      })
+      .addCase(registerSeller.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+      })
 
-    // Check Auth Status
-    builder.addCase(checkAuthStatus.pending, (state) => {
-      state.isLoading = true
-    })
-    builder.addCase(checkAuthStatus.fulfilled, (state, action: PayloadAction<any>) => {
-      state.isLoading = false
-      state.user = action.payload.user
-      state.token = action.payload.token
-    })
-    builder.addCase(checkAuthStatus.rejected, (state) => {
-      state.isLoading = false
-      state.user = null
-      state.token = null
-    })
+      // Check Auth Status
+      .addCase(checkAuthStatus.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(checkAuthStatus.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.user = action.payload.user
+        state.token = action.payload.token
+        state.isAuthenticated = true
+      })
+      .addCase(checkAuthStatus.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload as string
+        state.user = null
+        state.token = null
+        state.isAuthenticated = false
+      })
 
-    // Logout
-    builder.addCase(logout.fulfilled, (state) => {
-      state.user = null
-      state.token = null
-    })
+      // Logout
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null
+        state.token = null
+        state.isAuthenticated = false
+      })
   },
 })
 
-export const { clearError } = authSlice.actions
+export const { clearAuthError } = authSlice.actions
 export default authSlice.reducer
 

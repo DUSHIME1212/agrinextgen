@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAppDispatch } from "@/redux/hooks"
 import { useAuth } from "@/hooks/useAuth"
-import { logout } from "@/redux/slices/authSlice"
+import { logoutUser } from "@/redux/slices/authSlice"
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +18,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import {
@@ -59,15 +58,20 @@ const DashboardSidebar = () => {
   const dispatch = useAppDispatch()
   const { isAuthenticated, user, userRole } = useAuth()
 
-  const isSeller = userRole?.toLowerCase() === "seller"
-  const displayName =  "User"
-  const initials = displayName.substring(0, 2).toUpperCase()
+  const isSeller = userRole === "seller"
 
-  console.log(user);
-  
+  const displayName = user?.name || user?.businessName || user?.contactPerson || user?.email?.split("@")[0] || "User"
+
+
+  const initials: string = displayName
+    .split(" ")
+    .map((part: string) => part.charAt(0))
+    .join("")
+    .toUpperCase()
+    .substring(0, 2)
 
   const handleLogout = async () => {
-    await dispatch(logout())
+    await dispatch(logoutUser())
     router.push("/")
   }
 
@@ -80,7 +84,7 @@ const DashboardSidebar = () => {
 
   const customerLinks = [
     { name: "Dashboard", path: "/dashboard", icon: Home },
-    { name: "Order History", path: "/order-history", icon: ShoppingBag },
+    { name: "Order History", path: "/orders", icon: ShoppingBag },
     { name: "Transactions", path: "/transactions", icon: PieChart },
   ]
 
@@ -95,9 +99,11 @@ const DashboardSidebar = () => {
 
   return (
     <div className="max-md:bg-muted-foreground backdrop-blur-lg">
-      <Sidebar >
+      <Sidebar>
         <SidebarHeader className="flex h-14 items-center border-b px-4">
-          <div className="flex items-center max-md:hidden gap-2 font-semibold">{isSeller ? "Seller Portal" : "Customer Portal"}</div>
+          <div className="flex items-center max-md:hidden gap-2 font-semibold">
+            {isSeller ? "Seller Portal" : "Customer Portal"}
+          </div>
           <SidebarTrigger className="ml-auto md:hidden" />
         </SidebarHeader>
 
@@ -126,7 +132,7 @@ const DashboardSidebar = () => {
               <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild tooltip="Account Settings">
-                    <Link href="/dashboard/settings">
+                    <Link href="/settings">
                       <Settings />
                       <span>Account Settings</span>
                     </Link>
@@ -142,11 +148,11 @@ const DashboardSidebar = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-full justify-start gap-2 px-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src={user?.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ04IQPD-wCoIQ3vpWQy5mjc1HTVrCP1ZvJyg&s"} alt={displayName} />
+                  <AvatarImage src="/placeholder.svg" alt={displayName} />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-1 items-center justify-between overflow-hidden">
-                  <span className="truncate">{user?.user.username}</span>
+                  <span className="truncate">{displayName}</span>
                   <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                 </div>
               </Button>

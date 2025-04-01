@@ -1,27 +1,15 @@
-"use client";
+"use client"
 
-import type React from "react";
-import { useState, useEffect } from "react";
-import {
-  Menu,
-  X,
-  ShoppingCart,
-  Heart,
-  Search,
-  User,
-  ChevronDown,
-  Sun,
-  Moon,
-  LayoutGrid,
-  LogOut,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import Logo from "../home/Logo";
-import { useAppDispatch } from "@/redux/hooks";
-import { logout } from "@/redux/slices/authSlice";
+import type React from "react"
+import { useState, useEffect } from "react"
+import { Menu, X, ShoppingCart, Heart, Search, User, ChevronDown, Sun, Moon, LayoutGrid, LogOut } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { usePathname, useRouter } from "next/navigation"
+import Link from "next/link"
+import Logo from "../home/Logo"
+import { useAppDispatch } from "@/redux/hooks"
+import  logout, { logoutUser }  from "@/redux/slices/authSlice"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,24 +17,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/hooks/useAuth";
+} from "@/components/ui/dropdown-menu"
+import { useAuth } from "@/hooks/useAuth"
 
 interface NavItem {
-  name: string;
-  path: string;
-  children?: { name: string; path: string }[];
+  name: string
+  path: string
+  children?: { name: string; path: string }[]
 }
 interface user {
   user: {
     data: {
       user: {
-        name: string;
-        email: string;
-        image: string;
-      };
-    };
-  };
+        name: string
+        email: string
+        image: string
+      }
+    }
+  }
 }
 
 const navItems: NavItem[] = [
@@ -64,44 +52,44 @@ const navItems: NavItem[] = [
   { name: "Blog", path: "/blog" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
-];
+]
 
 const Navbar: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [theme, setTheme] = useState("light");
-  const location = usePathname();
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { isAuthenticated, user, userRole } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [theme, setTheme] = useState("light")
+  const location = usePathname()
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { isAuthenticated, user, userRole } = useAuth()
 
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location]);
+    setMobileMenuOpen(false)
+  }, [location])
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+      setScrolled(window.scrollY > 10)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const handleLogout = async () => {
-    await dispatch(logout());
-    router.push("/");
-  };
+    await dispatch(logoutUser())
+    router.push("/")
+  }
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.documentElement.classList.toggle("dark");
-  };
+    const newTheme = theme === "light" ? "dark" : "light"
+    setTheme(newTheme)
+    document.documentElement.classList.toggle("dark")
+  }
 
   const toggleDropdown = (name: string) => {
-    setActiveDropdown(activeDropdown === name ? null : name);
-  };
+    setActiveDropdown(activeDropdown === name ? null : name)
+  }
 
   return (
     <header
@@ -124,10 +112,7 @@ const Navbar: React.FC = () => {
             {navItems.map((item) => (
               <div key={item.name} className="group relative">
                 {item.children ? (
-                  <button
-                    className="nav-link flex items-center gap-1"
-                    onClick={() => toggleDropdown(item.name)}
-                  >
+                  <button className="nav-link flex items-center gap-1" onClick={() => toggleDropdown(item.name)}>
                     {item.name}
                     <ChevronDown
                       size={16}
@@ -138,13 +123,7 @@ const Navbar: React.FC = () => {
                     />
                   </button>
                 ) : (
-                  <Link
-                    href={item.path}
-                    className={cn(
-                      "nav-link",
-                      location === item.path && "active",
-                    )}
-                  >
+                  <Link href={item.path} className={cn("nav-link", location === item.path && "active")}>
                     {item.name}
                   </Link>
                 )}
@@ -154,9 +133,7 @@ const Navbar: React.FC = () => {
                   <div
                     className={cn(
                       "shadow-glass absolute left-0 top-full mt-1 min-w-[180px] origin-top-left overflow-hidden rounded-md border border-border bg-card transition-all duration-200",
-                      activeDropdown === item.name
-                        ? "scale-100 opacity-100"
-                        : "pointer-events-none scale-95 opacity-0",
+                      activeDropdown === item.name ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0",
                     )}
                   >
                     <div className="py-2">
@@ -178,10 +155,7 @@ const Navbar: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="hidden items-center space-x-2 md:flex">
-            <button
-              className="p-2 text-muted-foreground transition-colors hover:text-foreground"
-              aria-label="Search"
-            >
+            <button className="p-2 text-muted-foreground transition-colors hover:text-foreground" aria-label="Search">
               <Search size={20} />
             </button>
 
@@ -190,75 +164,56 @@ const Navbar: React.FC = () => {
               className="relative p-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <Heart size={20} />
-              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-                0
-              </Badge>
+              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">0</Badge>
             </Link>
 
-            <Link
-              href="/cart"
-              className="relative p-2 text-muted-foreground transition-colors hover:text-foreground"
-            >
+            <Link href="/cart" className="relative p-2 text-muted-foreground transition-colors hover:text-foreground">
               <ShoppingCart size={20} />
-              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-                0
-              </Badge>
+              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">0</Badge>
             </Link>
             {isAuthenticated ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-2 text-muted-foreground transition-colors hover:text-foreground">
-              <User size={20} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              {user?.name || user?.businessName || "User"}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard">Dashboard</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/settings">Profile Settings</Link>
-            </DropdownMenuItem>
-            {userRole === "customer" && (
-              <DropdownMenuItem asChild>
-                <Link href="/order-history">Order History</Link>
-              </DropdownMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-2 text-muted-foreground transition-colors hover:text-foreground">
+                    <User size={20} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>{user?.name || user?.businessName || "User"}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">Profile Settings</Link>
+                  </DropdownMenuItem>
+                  {userRole === "customer" && (
+                    <DropdownMenuItem asChild>
+                      <Link href="/order-history">Order History</Link>
+                    </DropdownMenuItem>
+                  )}
+                  {userRole === "seller" && (
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard/products">My Products</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/auth" className="p-2 text-muted-foreground transition-colors hover:text-foreground">
+                <User size={20} />
+              </Link>
             )}
-            {userRole === "seller" && (
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/products">My Products</Link>
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className="text-destructive"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <Link
-          href="/auth"
-          className="p-2 text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <User size={20} />
-        </Link>
-      )}
 
             <button
               className="p-2 text-muted-foreground transition-colors hover:text-foreground"
               onClick={toggleTheme}
-              aria-label={
-                theme === "light"
-                  ? "Switch to dark mode"
-                  : "Switch to light mode"
-              }
+              aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
             >
               {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
             </button>
@@ -266,14 +221,9 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center space-x-2 md:hidden">
-            <Link
-              href="/cart"
-              className="relative p-2 text-muted-foreground transition-colors hover:text-foreground"
-            >
+            <Link href="/cart" className="relative p-2 text-muted-foreground transition-colors hover:text-foreground">
               <ShoppingCart size={20} />
-              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">
-                0
-              </Badge>
+              <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center p-0 text-xs">0</Badge>
             </Link>
 
             <button
@@ -331,9 +281,7 @@ const Navbar: React.FC = () => {
                       <div
                         className={cn(
                           "flex flex-col space-y-1 overflow-hidden pl-4 transition-all duration-200",
-                          activeDropdown === item.name
-                            ? "max-h-40 opacity-100"
-                            : "max-h-0 opacity-0",
+                          activeDropdown === item.name ? "max-h-40 opacity-100" : "max-h-0 opacity-0",
                         )}
                       >
                         {item.children.map((child) => (
@@ -370,10 +318,7 @@ const Navbar: React.FC = () => {
                   <Search size={20} />
                 </button>
 
-                <Link
-                  href="/wishlist"
-                  className="p-2 text-muted-foreground transition-colors hover:text-foreground"
-                >
+                <Link href="/wishlist" className="p-2 text-muted-foreground transition-colors hover:text-foreground">
                   <Heart size={20} />
                 </Link>
 
@@ -385,10 +330,7 @@ const Navbar: React.FC = () => {
                     <LogOut size={20} />
                   </button>
                 ) : (
-                  <Link
-                    href="/auth"
-                    className="p-2 text-muted-foreground transition-colors hover:text-foreground"
-                  >
+                  <Link href="/auth" className="p-2 text-muted-foreground transition-colors hover:text-foreground">
                     <User size={20} />
                   </Link>
                 )}
@@ -396,11 +338,7 @@ const Navbar: React.FC = () => {
                 <button
                   className="p-2 text-muted-foreground transition-colors hover:text-foreground"
                   onClick={toggleTheme}
-                  aria-label={
-                    theme === "light"
-                      ? "Switch to dark mode"
-                      : "Switch to light mode"
-                  }
+                  aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
                 >
                   {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
@@ -423,7 +361,8 @@ const Navbar: React.FC = () => {
         />
       )}
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
+
