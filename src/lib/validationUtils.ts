@@ -10,7 +10,7 @@ export const isValidEmail = (email: string): boolean => {
    * Validate phone number format
    */
   export const isValidPhone = (phone: string): boolean => {
-    // This is a simple validation, can be adjusted based on region
+    
     const phoneRegex = /^\+?[0-9]{10,14}$/;
     return phoneRegex.test(phone);
   };

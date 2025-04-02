@@ -25,7 +25,7 @@ export const formatDateTime = (dateString: string): string => {
  * Get relative time (e.g., "2 days ago")
  */
 export const getRelativeTime = (dateString: string): string => {
-  // This is a placeholder for relative time functionality
-  // Could be implemented with libraries like date-fns/formatDistanceToNow
+  
+  
   return formatDate(dateString);
 };

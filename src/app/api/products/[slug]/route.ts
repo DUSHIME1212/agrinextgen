@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { authenticate } from "@/middleware/auth"
 
-// Get product by slug
+
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = await params
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
-// Update product by slug
+
 export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { error, status, user } = await authenticate(req)
@@ -59,18 +59,18 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    // Authorization check
+    
     if (product.sellerId !== user.id && user.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }
 
-    // Update product
+    
     const updatedProduct = await prisma.product.update({
       where: { slug },
       data: { ...body, updatedAt: new Date() },
     })
 
-    // Handle images if provided
+    
     if (body.images) {
       await prisma.productImage.deleteMany({ where: { productId: product.id } })
       await prisma.productImage.createMany({
@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
-// Delete product by slug
+
 export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { error, status, user } = await authenticate(req)
@@ -107,12 +107,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    // Authorization check
+    
     if (product.sellerId !== user.id && user.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }
 
-    // Delete related records
+    
     await prisma.productImage.deleteMany({ where: { productId: product.id } })
     await prisma.product.delete({ where: { slug } })
 

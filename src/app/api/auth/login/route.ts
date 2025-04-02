@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
       }
   
-      // Compare passwords
+      
       const isPasswordValid = await bcrypt.compare(password, user.password)
   
       if (!isPasswordValid) {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       }
       const token = generateToken(user)
   
-      // Return user data and token
+      
       return NextResponse.json({
         user: {
           id: user.id,

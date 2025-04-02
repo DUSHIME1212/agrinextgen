@@ -17,14 +17,14 @@ interface BlogCardProps {
   className?: string;
 }
 
-// Mock data
+
 const latestBlogs = [
   {
     id: "1",
     title: "10 Sustainable Farming Practices to Implement This Year",
     excerpt: "Discover eco-friendly farming methods that increase productivity while preserving natural resources for future generations.",
     image: "https://i.pinimg.com/736x/17/33/07/173307c34c2c33ee2fbdbaa77c1aedd4.jpg",
-    date: "June 15, 2023",
+    date: "March 21, 2025",
     readTime: "6 min",
     category: "Sustainability",
     slug: "sustainable-farming-practices",
@@ -34,7 +34,7 @@ const latestBlogs = [
     title: "Understanding Soil Health: A Comprehensive Guide",
     excerpt: "Learn how to analyze and improve your soil quality for better crop yields and plant health.",
     image: "https://i.pinimg.com/736x/bd/80/06/bd800671ba8d66c99c1068b6aafb57d6.jpg",
-    date: "May 28, 2023",
+    date: "March 21, 2025",
     readTime: "8 min",
     category: "Soil Management",
     slug: "understanding-soil-health",
@@ -44,7 +44,7 @@ const latestBlogs = [
     title: "The Future of AgTech: Innovations Changing Farming Forever",
     excerpt: "Explore cutting-edge agricultural technologies that are revolutionizing how we grow food.",
     image: "https://i.pinimg.com/736x/e8/32/7c/e8327c5ec6826da6ef4bf3515f8f65c3.jpg",
-    date: "May 10, 2023",
+    date: "March 21, 2025",
     readTime: "5 min",
     category: "Technology",
     slug: "future-of-agtech",

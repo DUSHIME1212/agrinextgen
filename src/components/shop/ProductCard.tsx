@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
 
-  // Check if product is in wishlist
+  
   useEffect(() => {
     if (wishlistItems.length > 0) {
       const inWishlist = wishlistItems.some((item) => item.productId === id)
@@ -223,7 +223,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
       <Link href={`/product/${id}`} className="block">
         <div className="mb-1 text-sm text-muted-foreground">{category}</div>
-        <h3 className="mb-2 line-clamp-2 min-h-12 font-medium transition-colors text-muted-foreground hover:text-primary">
+        <h3 className="mb-2 line-clamp-2 min-h-20 font-medium transition-colors text-muted-foreground hover:text-primary">
           {name}
         </h3>
 

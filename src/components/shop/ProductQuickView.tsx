@@ -51,7 +51,7 @@ const ProductQuickView: React.FC<ProductQuickViewProps> = ({ isOpen, onClose, pr
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
 
-  // Check if product is in wishlist
+  
   useEffect(() => {
     if (wishlistItems.length > 0) {
       const inWishlist = wishlistItems.some((item) => item.productId === product.id)
@@ -119,7 +119,7 @@ const ProductQuickView: React.FC<ProductQuickViewProps> = ({ isOpen, onClose, pr
 
     try {
       if (isWishlisted) {
-        // Find the wishlist item ID
+        
         const wishlistItem = wishlistItems.find((item) => item.productId === product.id)
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap()

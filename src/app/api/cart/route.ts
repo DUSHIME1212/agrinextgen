@@ -2,10 +2,10 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { authenticate, checkRole } from "@/middleware/auth"
 
-// Get user's cart
+
 export async function GET(req: NextRequest) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
@@ -63,32 +63,32 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Add item to cart
+
 export async function POST(req: NextRequest) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a customer
+    
     const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN"])
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
     }
 
-    // Parse request body
+    
     const body = await req.json()
     const { productId, quantity } = body
 
-    // Validate input
+    
     if (!productId || !quantity || quantity <= 0) {
       return NextResponse.json({ error: "Invalid product ID or quantity" }, { status: 400 })
     }
 
-    // Check if product exists
+    
     const product = await prisma.product.findUnique({
       where: { id: productId },
     })
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    // Get or create user's cart
+    
     if (!user) {
       return NextResponse.json({ error: "User not authenticated" }, { status: 401 })
     }
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Check if item already exists in cart
+    
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         cartId: cart.id,
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (existingItem) {
-      // Update quantity
+      
       await prisma.cartItem.update({
         where: { id: existingItem.id },
         data: {
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
         },
       })
     } else {
-      // Add new item
+      
       await prisma.cartItem.create({
         data: {
           cartId: cart.id,

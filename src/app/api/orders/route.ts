@@ -2,21 +2,21 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { authenticate, checkRole } from "@/middleware/auth"
 
-// Get user's orders
+
 export async function GET(req: NextRequest) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Get query parameters
+    
     const { searchParams } = new URL(req.url)
     const orderStatus = searchParams.get("status")
 
-    // Build where clause
+    
     const where: any = {}
 
     if (user.role === "CUSTOMER") {
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
       where.status = orderStatus
     }
 
-    // Get orders
+    
     const orders = await prisma.order.findMany({
       where,
       include: {
@@ -69,32 +69,32 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Create a new order
+
 export async function POST(req: NextRequest) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a customer
+    
     const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN"])
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
     }
 
-    // Parse request body
+    
     const body = await req.json()
     const { items, shippingAddress, paymentMethod } = body
 
-    // Validate input
+    
     if (!items || !items.length || !shippingAddress) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    // Get product details for all items
+    
     const productIds = items.map((item: any) => item.productId)
     const products = await prisma.product.findMany({
       where: {
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Calculate total amount
+    
     let totalAmount = 0
     const orderItems = items.map((item: any) => {
       const product = products.find((p) => p.id === item.productId)
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    // Create order
+    
     const order = await prisma.order.create({
       data: {
         customerId: user.id,
@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Clear user's cart after order is created
+    
     const cart = await prisma.cart.findFirst({
       where: { userId: user.id },
     })

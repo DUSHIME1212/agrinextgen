@@ -52,12 +52,12 @@ const Page: React.FC = () => {
 
   
 
-  // Get all unique categories
+  
   const categories = Array.from(
     new Set(blogPosts.map((post) => post.category)),
   );
 
-  // Filter posts based on search term and selected category
+  
   const filteredPosts = blogPosts.filter((post) => {
     const matchesSearch =
       searchTerm === "" ||
@@ -71,7 +71,7 @@ const Page: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Calculate pagination
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
@@ -115,7 +115,7 @@ const Page: React.FC = () => {
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
-                  setCurrentPage(1); // Reset to first page on search
+                  setCurrentPage(1); 
                 }}
               />
             </div>
@@ -164,7 +164,7 @@ const Page: React.FC = () => {
           )}
         </div>
 
-        {/* Pagination */}
+        {/* pagi */}
         {filteredPosts.length > postsPerPage && (
           <Pagination>
             <PaginationContent>
@@ -219,14 +219,14 @@ interface BlogPostCardProps {
 
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-md">
+    <Card className="overflow-hidden group transition-shadow hover:shadow-md">
       <div className="grid grid-cols-1 md:grid-cols-3">
         <div className="relative min-h-72 overflow-clip bg-muted">
             <Image
               fill
               src={post.image}
               alt={post.title}
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              className="object-cover group-hover:grayscale-0 duration-700 grayscale transition-transform duration-500 hover:scale-105"
             />
         </div>
         <div className="md:col-span-2 h-full">
@@ -260,7 +260,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
                 <img
                   src={post.author.avatar}
                   alt={post.author.name}
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-10 w-10 grayscale rounded-full object-cover"
                 />
                 <div>
                   <p className="font-medium leading-tight">

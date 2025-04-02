@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
-// Types
+
 interface ProductImage {
   id: string
   url: string
@@ -59,7 +59,7 @@ const initialState: ProductState = {
   },
 }
 
-// Async thunks
+
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (params: { page?: number; limit?: number; category?: string; sellerId?: string } = {}, { rejectWithValue }) => {
@@ -112,16 +112,16 @@ export const addProduct = createAsyncThunk("products/addProduct", async (product
       return rejectWithValue("Authentication required")
     }
 
-    // Handle image uploads if they are URLs
+    
     let imageUrls = []
     if (productData.images && productData.images.length > 0) {
       imageUrls = productData.images
     }
 
-    // Create a new object without the images property
+    
     const { images, ...productDataWithoutImages } = productData
 
-    // Prepare the data to send to the API
+    
     const dataToSend = {
       ...productDataWithoutImages,
       images: imageUrls,
@@ -211,7 +211,7 @@ export const deleteProduct = createAsyncThunk("products/deleteProduct", async (i
   }
 })
 
-// Slice
+
 const productSlice = createSlice({
   name: "products",
   initialState,
@@ -225,7 +225,7 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch products
+      
       .addCase(fetchProducts.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -240,7 +240,7 @@ const productSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Fetch product by ID
+      
       .addCase(fetchProductById.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -254,7 +254,7 @@ const productSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Add product
+      
       .addCase(addProduct.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -270,7 +270,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Update product
+      
       .addCase(updateProduct.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -289,7 +289,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Delete product
+      
       .addCase(deleteProduct.pending, (state) => {
         state.isLoading = true
         state.error = null

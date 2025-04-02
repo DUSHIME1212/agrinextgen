@@ -19,14 +19,14 @@ const BlogPost: React.FC = () => {
   
   useEffect(() => {
     if (BlogId) {
-      // Simulate API call with setTimeout
+      
       setLoading(true);
       setTimeout(() => {
         const foundPost = typeof BlogId === 'string' ? getBlogBySlug(BlogId) : undefined;
         setPost(foundPost);
         
         if (foundPost) {
-          // Find related posts in the same category
+          
           const related: BlogPostType[] = blogPosts
             .filter((p: BlogPostType) => p.category === foundPost.category && p.id !== foundPost.id)
             .slice(0, 3);
@@ -38,7 +38,7 @@ const BlogPost: React.FC = () => {
     }
   }, [BlogId]);
   
-  // Handle navigation between posts
+  
 const currentIndex: number = blogPosts.findIndex((p: BlogPostType) => p.id === BlogId);
   const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : null;
   const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : null;

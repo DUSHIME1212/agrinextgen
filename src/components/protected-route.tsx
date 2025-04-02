@@ -34,7 +34,7 @@ export default function ProtectedRoute({
       try {
         await dispatch(checkAuthStatus()).unwrap()
         
-        // Check if user should be redirected
+        
         if (pathname === "/auth") {
           router.push(callbackUrl)
         } else if (allowedUserTypes.length > 0 && user?.role) {

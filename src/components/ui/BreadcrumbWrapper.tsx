@@ -1,6 +1,6 @@
 
-// This file is now a wrapper around the shadcn/ui breadcrumb component
-// to maintain backward compatibility with aRW code that might be using it
+
+
 
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
@@ -25,16 +25,16 @@ const BreadcrumbWrapper: React.FC<BreadcrumbProps> = ({ customPaths, className }
   const location = usePathname();
   const pathnames = location.split('/').filter((x) => x);
   
-  // Generate paths based on current URL or use custom paths if provided
+  
   const breadcrumbPaths = customPaths ?? pathnames.map((path, index) => {
     const url = `/${pathnames.slice(0, index + 1).join('/')}`;
     
-    // Format path name
+    
     let name = path.replace(/-/g, ' ');
     
-    // Check if path contains ID pattern or slug
+    
     if (/^[0-9a-fA-F-]+$/.test(path) || path.includes('-')) {
-      // Look for a title in the state, or use a generic name
+      
       name = 'Details';
     }
     

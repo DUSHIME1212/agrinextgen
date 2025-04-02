@@ -41,7 +41,7 @@ const Page: React.FC = () => {
   const onSubmit = (values: ContactFormValues) => {
     setIsSubmitting(true);
     
-    // Simulate form submission
+    
     setTimeout(() => {
       console.log('Form values:', values);
       setIsSubmitting(false);

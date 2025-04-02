@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Leaf, Users, Globe, Shield, Award, Clock } from 'lucide-react';
+import Image from 'next/image';
 
 const Page: React.FC = () => {
   return (
@@ -21,21 +22,17 @@ const Page: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
-            <div>
-              <h2 className="text-2xl font-semibold mb-6">Our Story</h2>
+            <div className='flex flex-col justify-center p-16'>
+              <h2 className="text-7xl font-semibold text-primary mb-6">My Story</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Founded in 2025 in Kigali, Rwanda, Agri-NextGen began with a simple mission: to bridge the gap between traditional farming practices and modern agricultural technology for Rwandan farmers.
-                </p>
-                <p>
-                  What started as a small agricultural supply store has grown into Rwanda's leading agricultural technology and supply compaRW, serving thousands of farmers across all provinces of Rwanda.
-                </p>
-                <p>
-                  Our founder , a third-generation farmer, experienced firsthand the challenges that Rwandan farmers face daily. This deep understanding of local agriculture drives our commitment to providing solutions that are not only innovative but also practical and accessible.
+                  Founded in 2025 in Kigali, Rwanda, Agri NextGen began with a simple mission: to bridge the gap between traditional farming practices and modern agricultural technology for Rwandan farmers.
                 </p>
               </div>
             </div>
-            <div className="rounded-lg overflow-hidden h-80 bg-[url('https://images.unsplash.com/photo-1595861759560-2d8a547c55f1?q=80&w=2942&auto=format&fit=crop')] bg-cover bg-center"></div>
+            <div className="rounded-lg relative lg:w72 overflow-hidden h-[512px] ">
+              <Image src={"https://media.licdn.com/dms/image/v2/D4D03AQG_xHTiI0XdOg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1730247106450?e=1749081600&v=beta&t=9LL5xM-lDXFza6zFF5726HoSh9HZCQ3oj_IjYCiSaA8"} alt='' fill className='object-cover grayscale w-40 object-center'/>
+            </div>
           </div>
 
           <div className="mb-16">

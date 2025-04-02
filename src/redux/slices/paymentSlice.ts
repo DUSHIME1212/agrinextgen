@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
-// Types
+
 interface Payment {
   id: string
   userId: string
@@ -29,7 +29,7 @@ const initialState: PaymentState = {
   error: null,
 }
 
-// Async thunks
+
 export const fetchPayments = createAsyncThunk("payments/fetchPayments", async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token")
@@ -145,7 +145,7 @@ export const updatePaymentStatus = createAsyncThunk(
   },
 )
 
-// Slice
+
 const paymentSlice = createSlice({
   name: "payments",
   initialState,
@@ -159,7 +159,7 @@ const paymentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch payments
+      
       .addCase(fetchPayments.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -173,7 +173,7 @@ const paymentSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Fetch payment by ID
+      
       .addCase(fetchPaymentById.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -187,7 +187,7 @@ const paymentSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Create payment
+      
       .addCase(createPayment.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -204,7 +204,7 @@ const paymentSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Update payment status
+      
       .addCase(updatePaymentStatus.pending, (state) => {
         state.isLoading = true
         state.error = null

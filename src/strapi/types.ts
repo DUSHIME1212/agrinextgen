@@ -1,4 +1,4 @@
-// types.ts
+
 
 export interface Review{
   id: number;

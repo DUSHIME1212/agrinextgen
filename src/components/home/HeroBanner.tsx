@@ -7,7 +7,7 @@ const HeroBanner = ({ className }: { className?: string }) => {
   return (
     <section
       className={cn(
-        "border-y border-border bg-gradient-to-b from-primary/20 backdrop-blur-xl to-primary-foreground z-10  py-16 md:py-24",
+        "border-y border-border bg-gradient-to-b from-primary/20 backdrop-blur-xl to-primary-muted-foreground z-10  py-16 md:py-24",
         className,
       )}
     >
@@ -166,7 +166,7 @@ const HeroBanner = ({ className }: { className?: string }) => {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <Button size="lg" asChild>
-                <a href="/about">Learn Our Story</a>
+                <a href="/about">Learn My Story</a>
               </Button>
 
               <Button size="lg" variant="outline" asChild>

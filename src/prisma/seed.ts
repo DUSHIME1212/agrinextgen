@@ -55,7 +55,7 @@ async function main() {
   console.log(`Created customer user: ${customer.email}`)
 
   console.log("Creating products...")
-  // Create products
+  
   const products = [
     {
       name: "Organic Tomato Seeds",
@@ -255,20 +255,20 @@ async function main() {
       data: {
         productId: product.id,
         userId: customer.id,
-        rating: Math.floor(Math.random() * 2) + 4, // Random rating between 4-5
+        rating: Math.floor(Math.random() * 2) + 4, 
         comment: "Great product! Exactly as described and arrived quickly.",
       },
     })
   }
 
-  // Create a cart for the customer
+  
   const cart = await prisma.cart.create({
     data: {
       userId: customer.id,
     },
   })
 
-  // Add a couple of items to the cart
+  
   const cartProducts = await prisma.product.findMany({
     take: 2,
   })
@@ -284,7 +284,7 @@ async function main() {
     })
   }
 
-  // Add a couple of items to the wishlist
+  
   const wishlistProducts = await prisma.product.findMany({
     skip: 2,
     take: 2,
@@ -299,7 +299,7 @@ async function main() {
     })
   }
 
-  // Create a completed order for the customer
+  
   const orderProducts = await prisma.product.findMany({
     skip: 4,
     take: 2,
@@ -310,7 +310,7 @@ async function main() {
 
   for (const product of orderProducts) {
     const price = product.discount ? product.price - product.discount : product.price
-    const quantity = Math.floor(Math.random() * 2) + 1 // 1 or 2
+    const quantity = Math.floor(Math.random() * 2) + 1 
     totalAmount += price * quantity
 
     orderItems.push({
@@ -334,7 +334,7 @@ async function main() {
     },
   })
 
-  // Create a payment for the order
+  
   await prisma.payment.create({
     data: {
       userId: customer.id,

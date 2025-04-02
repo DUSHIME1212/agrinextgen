@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"
 import { authenticate, checkRole } from "@/middleware/auth"
 import { slugify } from "@/lib/utils"
 
-// Get all products
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     const page = Number.parseInt(searchParams.get("page") || "1")
     const skip = (page - 1) * limit
 
-    // Build the where clause
+    
     const where: any = {
-      // verified: true,
+      
     }
 
     if (category) {
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       where.sellerId = sellerId
     }
 
-    // Get products
+    
     const products = await prisma.product.findMany({
       where,
       include: {
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       take: limit,
     })
 
-    // Get total count
+    
     const total = await prisma.product.count({ where })
 
     return NextResponse.json({
@@ -64,23 +64,23 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Add a new product
+
 export async function POST(req: NextRequest) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a seller
+    
     const roleCheck = checkRole(user, ["SELLER", "ADMIN"])
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
     }
 
-    // Parse request body
+    
     const body = await req.json()
     const {
       name,
@@ -108,10 +108,10 @@ export async function POST(req: NextRequest) {
       images,
     } = body
 
-    // Generate slug
+    
     const slug = slugify(name)
 
-    // Check if product with same slug exists
+    
     const existingProduct = await prisma.product.findUnique({
       where: { slug },
     })
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Product with this name already exists" }, { status: 400 })
     }
 
-    // Create product
+    
     const product = await prisma.product.create({
       data: {
         documentId: `prod_${Date.now()}`,
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
         Storage,
         Certification,
         shippingReturns,
-        verified: user.role === "ADMIN", // Auto-verify if admin
+        verified: user.role === "ADMIN", 
         isNew: isNew || true,
         discount: discount ? Number.parseFloat(discount) : null,
         slug,
@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Add product images if provided
+    
     if (images && images.length > 0) {
       await prisma.productImage.createMany({
         data: images.map((url: string) => ({
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Get the product with images
+    
     const productWithImages = await prisma.product.findUnique({
       where: { id: product.id },
       include: {

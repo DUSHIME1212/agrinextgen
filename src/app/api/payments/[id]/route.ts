@@ -2,10 +2,10 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { authenticate, checkRole } from "@/middleware/auth"
 
-// Get payment details
+
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     const paymentId = params.id
 
-    // Get payment
+    
     const payment = await prisma.payment.findUnique({
       where: { id: paymentId },
       include: {
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: "Payment not found" }, { status: 404 })
     }
 
-    // Check if payment belongs to user or user is admin
+    
     if (!user || (payment.userId !== user.id && user.role !== "ADMIN")) {
       return NextResponse.json({ error: "You are not authorized to view this payment" }, { status: 403 })
     }
@@ -50,17 +50,17 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-// Update payment status
+
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is admin
+    
     const roleCheck = checkRole(user, ["ADMIN"])
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
@@ -70,12 +70,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const body = await req.json()
     const { status: paymentStatus } = body
 
-    // Validate input
+    
     if (!paymentStatus) {
       return NextResponse.json({ error: "Payment status is required" }, { status: 400 })
     }
 
-    // Get payment
+    
     const payment = await prisma.payment.findUnique({
       where: { id: paymentId },
       include: {
@@ -87,7 +87,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: "Payment not found" }, { status: 404 })
     }
 
-    // Update payment status
+    
     const updatedPayment = await prisma.payment.update({
       where: { id: paymentId },
       data: {
@@ -98,7 +98,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       },
     })
 
-    // Update order status if payment status changes
+    
     if (paymentStatus === "completed" && payment.order.paymentStatus !== "paid") {
       await prisma.order.update({
         where: { id: payment.orderId },

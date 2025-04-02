@@ -38,7 +38,7 @@ const Layout: React.FC<LayoutProps> = ({
           <div className="bg-secondary border-y border-border">
             <div className={fullWidth ? "container-custom" : "container-custom max-w-5xl"}>
               <BreadcrumbWrapper 
-                className="py-3" 
+                className="py-3 px-8" 
                 customPaths={customBreadcrumbPaths} 
               />
             </div>

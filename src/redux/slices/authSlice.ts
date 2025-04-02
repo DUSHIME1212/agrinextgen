@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
-// Types
+
 interface User {
   id: string
   email: string
@@ -19,7 +19,7 @@ interface AuthState {
   isAuthenticated: boolean
 }
 
-// Get token from localStorage
+
 const getStoredToken = (): string | null => {
   if (typeof window !== "undefined") {
     return localStorage.getItem("token")
@@ -35,7 +35,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
 }
 
-// Async thunks
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { identifier: string; password: string }, { rejectWithValue }) => {
@@ -54,7 +54,7 @@ export const loginUser = createAsyncThunk(
       }
 
       const data = await response.json()
-      // Store token in localStorage
+      
       localStorage.setItem("token", data.token)
       return data
     } catch (error) {
@@ -86,7 +86,7 @@ export const registerCustomer = createAsyncThunk(
       }
 
       const data = await response.json()
-      // Store token in localStorage
+      
       localStorage.setItem("token", data.token)
       return data
     } catch (error) {
@@ -130,7 +130,7 @@ export const registerSeller = createAsyncThunk(
       }
 
       const data = await response.json()
-      // Store token in localStorage
+      
       localStorage.setItem("token", data.token)
       return data
     } catch (error) {
@@ -175,7 +175,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async (_, { reject
   }
 })
 
-// Slice
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -186,7 +186,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login
+      
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -202,7 +202,7 @@ const authSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Register Customer
+      
       .addCase(registerCustomer.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -218,7 +218,7 @@ const authSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Register Seller
+      
       .addCase(registerSeller.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -234,7 +234,7 @@ const authSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Check Auth Status
+      
       .addCase(checkAuthStatus.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -253,7 +253,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false
       })
 
-      // Logout
+      
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null
         state.token = null

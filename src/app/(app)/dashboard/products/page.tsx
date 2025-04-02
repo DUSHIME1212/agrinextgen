@@ -26,7 +26,7 @@ import { Search, Plus, MoreVertical, Edit, Trash, Eye } from 'lucide-react';
 import DashBoardLayout from '@/components/DashBoardLayout';
 import Link from 'next/link';
 
-// Sample product data
+
 const sampleProducts = [
   {
     id: 1,
@@ -74,13 +74,13 @@ const Page: React.FC = () => {
   const [products, setProducts] = useState(sampleProducts);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filter products based on search term
+  
   const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle product deletion
+  
   const handleDeleteProduct = (id: number) => {
     setProducts(products.filter(product => product.id !== id));
   };

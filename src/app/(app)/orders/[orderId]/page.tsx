@@ -4,7 +4,7 @@ import Layout from '@/components/layout/Layout';
 import { useParams } from 'next/navigation';
 
 const Page: React.FC = () => {
-  // Hardcoding an order ID instead of using `useParams` for demonstration
+  
   const orderId = "ORD12345";
   
   return (

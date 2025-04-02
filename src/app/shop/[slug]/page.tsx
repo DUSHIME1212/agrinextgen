@@ -68,7 +68,7 @@ const Page: React.FC = () => {
     return <NotFound />;
   }
 
-  // Calculate discounted price
+  
   const discountedPrice = product.discount
     ? product.price - (product.price * product.discount) / 100
     : product.price;
@@ -113,7 +113,7 @@ const Page: React.FC = () => {
     );
   };
 
-  // Get image URLs from productimg array
+  
   const productImages = product.productimg?.map((img) => img.url) || [];
 
   return (

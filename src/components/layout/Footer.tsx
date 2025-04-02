@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/shop/seeds"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Seeds & Plants
@@ -123,7 +123,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop/equipment"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Equipment & Tools
@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop/fertilizers"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Fertilizers
@@ -139,7 +139,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop/organic"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Organic Products
@@ -147,7 +147,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop/livestock"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Livestock Supplies
@@ -155,7 +155,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/shop/irrigation"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Irrigation Systems

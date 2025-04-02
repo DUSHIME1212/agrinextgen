@@ -42,12 +42,6 @@ const navItems: NavItem[] = [
   {
     name: "Shop",
     path: "/shop",
-    children: [
-      { name: "Seeds", path: "/shop/seeds" },
-      { name: "Equipment", path: "/shop/equipment" },
-      { name: "Fertilizers", path: "/shop/fertilizers" },
-      { name: "Organic", path: "/shop/organic" },
-    ],
   },
   { name: "Blog", path: "/blog" },
   { name: "About", path: "/about" },

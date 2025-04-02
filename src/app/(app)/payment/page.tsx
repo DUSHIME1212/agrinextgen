@@ -63,17 +63,17 @@ export default function PaymentPage() {
     setIsProcessing(true)
 
     try {
-      // Simulate payment processing
+      
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
-      // Generate a random transaction ID
+      
       const randomTransactionId = `TXN${Date.now()}${Math.floor(Math.random() * 1000)}`
       setTransactionId(randomTransactionId)
 
-      // Show success message
+      
       toast.success("Payment processed successfully!")
 
-      // Set payment as complete
+      
       setIsComplete(true)
     } catch (error) {
       toast.error("Payment processing failed. Please try again.")

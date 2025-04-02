@@ -56,17 +56,17 @@ export interface BlogPostApiData {
   };
 }
 
-// export interface BlogPosts {
-//   posts: BlogPost[];
-//   postsApi?: BlogPostApiData[];
-// }
 
-// export const fetchBlogs = async (): Promise<BlogPostApiData[]> => {
-//   const response = await api.get<BlogPostApiData[]>("api/blogs?populate=*");
-//   return response.data.data;
-// };
 
-// console.log(fetchBlogs);
+
+
+
+
+
+
+
+
+
 
 export const blogPosts: BlogPost[] = [
   {
@@ -121,11 +121,11 @@ export const blogPosts: BlogPost[] = [
         <p>As consumers increasingly seek out sustainably grown products, adopting these practices can position your farm for long-term success while contributing to a healthier planet.</p>
       `,
     image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
-    date: "June 15, 2023",
+    date: "March 21, 2025",
     readTime: "6 min",
     category: "Sustainability",
     author: {
-      name: "Emma Wilson",
+      name: "Emma Mukamurenzi ",
       avatar:
         "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop",
       role: "Agricultural Consultant",
@@ -199,11 +199,11 @@ export const blogPosts: BlogPost[] = [
         <p>Remember that healthy soil leads to healthy plants, which are more resistant to pests, diseases, and weather extremes—ultimately resulting in better yields and higher quality crops with fewer external inputs.</p>
       `,
     image: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe",
-    date: "May 28, 2023",
+    date: "March 21, 2025",
     readTime: "8 min",
     category: "Soil Management",
     author: {
-      name: "Dr. Marcus Chen",
+      name: "Dr. Habimana Marc",
       avatar:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
       role: "Soil Scientist",
@@ -276,11 +276,11 @@ export const blogPosts: BlogPost[] = [
       `,
     image:
       "https://i.pinimg.com/736x/da/4c/c8/da4cc84e4aba23138da71ae896b78b29.jpg",
-    date: "May 10, 2023",
+    date: "March 21, 2025",
     readTime: "5 min",
     category: "Technology",
     author: {
-      name: "Akira Tanaka",
+      name: "DUSHIME Aime",
       avatar:
         "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop",
       role: "AgTech Consultant",
@@ -363,11 +363,11 @@ export const blogPosts: BlogPost[] = [
         <p>Remember that some level of pest presence is normal and even beneficial as it supports populations of natural predators. The goal isn't to eliminate all pests but to keep them below economically damaging thresholds while maintaining a balanced ecosystem on your farm.</p>
       `,
     image: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a",
-    date: "April 18, 2023",
+    date: "March 21, 2025",
     readTime: "7 min",
     category: "Pest Control",
     author: {
-      name: "Sophia Rodriguez",
+      name: "Sophia Ingabire ",
       avatar:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
       role: "Organic Farming Specialist",
@@ -460,11 +460,11 @@ export const blogPosts: BlogPost[] = [
         <p>With thoughtful implementation of these strategies, most farms can reduce water use by 20-40% while maintaining productivity—a win for both the environment and the bottom line.</p>
       `,
     image: "https://images.unsplash.com/photo-1536686536162-1efdcbf3890f",
-    date: "April 5, 2023",
+    date: "March 21, 2025",
     readTime: "8 min",
     category: "Water Management",
     author: {
-      name: "James Miller",
+      name: "James Niyomwungeri ",
       avatar:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
       role: "Irrigation Specialist",
@@ -556,11 +556,11 @@ export const blogPosts: BlogPost[] = [
         <p>While not a silver bullet for all agricultural challenges, regenerative agriculture offers a promising pathway toward farming systems that are productive, profitable, and actively heal the planet. Whether you're managing thousands of acres or a small market garden, regenerative principles can be adapted to fit your context and goals.</p>
       `,
     image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
-    date: "March 20, 2023",
+    date: "March 21, 2025",
     readTime: "9 min",
     category: "Sustainability",
     author: {
-      name: "Elena Patel",
+      name: "Elena Uwase ",
       avatar:
         "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop",
       role: "Regenerative Agriculture Consultant",

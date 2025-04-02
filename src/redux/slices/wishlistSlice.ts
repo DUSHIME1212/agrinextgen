@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
-// Types
+
 interface WishlistItem {
   id: string
   userId: string
@@ -28,7 +28,7 @@ const initialState: WishlistState = {
   error: null,
 }
 
-// Async thunks
+
 export const fetchWishlist = createAsyncThunk("wishlist/fetchWishlist", async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token")
@@ -116,7 +116,7 @@ export const removeFromWishlist = createAsyncThunk(
   },
 )
 
-// Slice
+
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
@@ -127,7 +127,7 @@ const wishlistSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch wishlist
+      
       .addCase(fetchWishlist.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -141,7 +141,7 @@ const wishlistSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Add to wishlist
+      
       .addCase(addToWishlist.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -157,7 +157,7 @@ const wishlistSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Remove from wishlist
+      
       .addCase(removeFromWishlist.pending, (state) => {
         state.isLoading = true
         state.error = null

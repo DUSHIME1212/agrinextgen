@@ -2,17 +2,17 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { authenticate, checkRole } from "@/middleware/auth"
 
-// Update cart item
+
 export async function PUT(req: NextRequest, { params }: { params: { itemId: string } }) {
   try {
-    // Authenticate user
+    
     const { error, status, user } = await authenticate(req)
 
     if (error) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a customer
+    
     const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN"])
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
@@ -80,7 +80,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { itemId: s
 
     const itemId = params.itemId
 
-    // Get cart item
+    
     const cartItem = await prisma.cartItem.findUnique({
       where: { id: itemId },
       include: {

@@ -14,7 +14,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Download, Calendar } from 'lucide-react';
 
-// Sample transaction data
+
 const transactions = [
   {
     id: "TX12345",

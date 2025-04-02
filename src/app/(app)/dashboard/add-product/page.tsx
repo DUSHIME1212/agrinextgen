@@ -20,13 +20,13 @@ import { addProduct } from "@/redux/slices/productSlice"
 import CloudinaryUploader from "@/components/ui/CloudinaryUploader"
 import { useRouter } from "next/navigation"
 
-// Define types for specifications
+
 type SpecificationItem = {
   key: string
   value: string
 }
 
-// Form validation schema using Zod
+
 const formSchema = z.object({
   name: z.string().min(3, {
     message: "Product name must be at least 3 characters.",
@@ -96,18 +96,18 @@ const Page: React.FC = () => {
     },
   })
 
-  // Handle Cloudinary image upload
+  
   const handleImageUpload = (newImageUrls: string[]) => {
     setImages([...images, ...newImageUrls])
     console.log("Images after upload:", [...images, ...newImageUrls])
   }
 
-  // Remove image
+  
   const removeImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index))
   }
 
-  // Add product info item
+  
   const addProductInfoItem = () => {
     if (newInfoKey.trim() && newInfoValue.trim()) {
       setProductInfo([...productInfo, { key: newInfoKey, value: newInfoValue }])
@@ -116,12 +116,12 @@ const Page: React.FC = () => {
     }
   }
 
-  // Remove product info item
+  
   const removeProductInfoItem = (index: number) => {
     setProductInfo(productInfo.filter((_, i) => i !== index))
   }
 
-  // Add additional info item
+  
   const addAdditionalInfoItem = () => {
     if (newInfoKey.trim() && newInfoValue.trim()) {
       setAdditionalInfo([...additionalInfo, { key: newInfoKey, value: newInfoValue }])
@@ -130,12 +130,12 @@ const Page: React.FC = () => {
     }
   }
 
-  // Remove additional info item
+  
   const removeAdditionalInfoItem = (index: number) => {
     setAdditionalInfo(additionalInfo.filter((_, i) => i !== index))
   }
 
-  // Add product detail
+  
   const addDetail = () => {
     if (newDetail.trim()) {
       setDetails([...details, newDetail])
@@ -143,12 +143,12 @@ const Page: React.FC = () => {
     }
   }
 
-  // Remove product detail
+  
   const removeDetail = (index: number) => {
     setDetails(details.filter((_, i) => i !== index))
   }
 
-  // Handle growing info change
+  
   const handleGrowingInfoChange = (key: string, value: string) => {
     setGrowingInfo({
       ...growingInfo,
@@ -163,10 +163,10 @@ const Page: React.FC = () => {
         return
       }
 
-      // Combine features from details array
+      
       const featuresText = details.join("\n")
 
-      // Structure the product data
+      
       const productData = {
         name: values.name,
         productDescription: values.productDescription,
@@ -187,13 +187,13 @@ const Page: React.FC = () => {
 
       console.log("Submitting product data:", productData)
 
-      // Dispatch the addProduct action
+      
       const result = await dispatch(addProduct(productData)).unwrap()
       console.log("Product added successfully:", result)
 
       toast.success(`${values.name} has been added successfully.`)
 
-      // Reset form after submission
+      
       form.reset()
       setImages([])
       setProductInfo([])
@@ -201,7 +201,7 @@ const Page: React.FC = () => {
       setDetails([])
       setGrowingInfo({})
 
-      // Redirect to dashboard
+      
       router.push("/dashboard")
     } catch (error: any) {
       console.error("Error adding product:", error)

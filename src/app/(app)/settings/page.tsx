@@ -12,7 +12,7 @@ import { Settings, User, Edit, Lock, Info } from 'lucide-react';
 import { toast } from 'sonner';
 
 const page = () => {
-    // States for form values
+    
     const [emailNotifications, setEmailNotifications] = useState(true);
     const [marketingEmails, setMarketingEmails] = useState(false);
     const [orderUpdates, setOrderUpdates] = useState(true);

@@ -13,7 +13,7 @@ import {
   SidebarGroupContent
 } from '@/components/ui/sidebar';
 
-// Import filter components
+
 import SearchFilter from './filters/SearchFilter';
 import QuickFilters from './filters/QuickFilters';
 import CategoryFilter from './filters/CategoryFilter';
@@ -22,7 +22,7 @@ import PriceRangeFilter from './filters/PriceRangeFilter';
 import ProductTypeFilter from './filters/ProductTypeFilter';
 import RatingFilter from './filters/RatingFilter';
 
-// Agricultural product filter categories
+
 const CATEGORIES = [
   { id: 'seeds-plants', label: 'Seeds & Plants' },
   { id: 'equipment-tools', label: 'Equipment & Tools' },

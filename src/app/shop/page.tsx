@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { fetchProducts } from "@/redux/slices/productSlice"
 import ProductQuickView from "@/components/shop/ProductQuickView"
 
-// Category to ID mapping for URL params
+
 const CATEGORY_MAP: Record<string, string> = {
   "seeds-plants": "Seeds & Plants",
   "equipment-tools": "Equipment & Tools",
@@ -79,11 +79,11 @@ const Page = () => {
       )
     }
 
-    // Category filter from URL param
+    
     if (category && CATEGORY_MAP[category as string]) {
       results = results.filter((product) => product.Category === CATEGORY_MAP[category as string])
     }
-    // Or from sidebar selection
+    
     else if (filters.categories && filters.categories.length > 0) {
       const selectedCategories = filters.categories
         .map((id: string) => {
@@ -97,7 +97,7 @@ const Page = () => {
       }
     }
 
-    // Price range filter
+    
     if (filters.priceRange) {
       switch (filters.priceRange) {
         case "under15":
@@ -115,12 +115,12 @@ const Page = () => {
       }
     }
 
-    // Rating filter
+    
     if (filters.rating > 0) {
       results = results.filter((product) => product.rating >= filters.rating)
     }
 
-    // Sale items filter (using discount field)
+    
     if (filters.onSale) {
       results = results.filter((product) => product.discount && product.discount > 0)
     }

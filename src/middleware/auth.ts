@@ -2,10 +2,10 @@ import type { NextRequest } from "next/server"
 import { verifyToken } from "@/lib/jwt"
 import prisma from "@/lib/prisma"
 
-// Middleware to check if user is authenticated
+
 export async function authenticate(req: NextRequest) {
   try {
-    // Get the authorization header
+    
     const authHeader = req.headers.get("authorization")
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -16,10 +16,10 @@ export async function authenticate(req: NextRequest) {
       }
     }
 
-    // Extract the token
+    
     const token = authHeader.split(" ")[1]
 
-    // Verify the token
+    
     if (!token) {
       return {
         error: "Unauthorized: No token provided",
@@ -37,7 +37,7 @@ export async function authenticate(req: NextRequest) {
       }
     }
 
-    // Get the user from the database
+    
     const user = await prisma.user.findUnique({
       where: { id: payload.id },
       select: {
@@ -58,7 +58,7 @@ export async function authenticate(req: NextRequest) {
       }
     }
 
-    // Return the user
+    
     return {
       error: null,
       status: 200,
@@ -74,7 +74,7 @@ export async function authenticate(req: NextRequest) {
   }
 }
 
-// Check if user has required role
+
 export function checkRole(user: any, roles: string[]) {
   if (!user) {
     return {
@@ -83,7 +83,7 @@ export function checkRole(user: any, roles: string[]) {
     }
   }
 
-  // Convert roles to uppercase for case-insensitive comparison
+  
   const userRole = user.role.toUpperCase()
   const allowedRoles = roles.map((role) => role.toUpperCase())
 

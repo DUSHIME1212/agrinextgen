@@ -87,21 +87,21 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
-      // Create a FormData object to pass to the server action
+      
       const formData = new FormData();
 
-      // Add the shipping address
+      
       const shippingAddress = `${data.fullName}, ${data.address}, ${data.city}, ${data.postalCode}, ${data.country}`;
       formData.append("shippingAddress", shippingAddress);
 
-      // Add payment method
+      
       formData.append("paymentMethod", data.paymentMethod);
 
-      // Add total amount
+      
       const total = calculateTotal();
       formData.append("totalAmount", total.toString());
 
-      // Process the checkout using the server action
+      
       await processCheckout(formData);
     } catch (error) {
       console.error("Checkout error:", error);

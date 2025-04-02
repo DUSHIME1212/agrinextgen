@@ -125,23 +125,23 @@ const Page: React.FC = () => {
     (state: { auth: AuthState }) => state.auth,
   );
 
-  // Check if user is already logged in
+  
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
         try {
           await dispatch(checkAuthStatus()).unwrap();
           if (isAuthenticated) {
-            router.push(callbackUrl);
+            router.push("/dashboard");
           }
         } catch (error) {
-          // Token is invalid, continue with login page
+          
         }
       }
     };
 
     checkAuth();
-  }, [dispatch, token, router, callbackUrl, isAuthenticated]);
+  }, [dispatch, token, router, isAuthenticated]);
 
   useEffect(() => {
     if (error) {
@@ -187,7 +187,7 @@ const Page: React.FC = () => {
     },
   });
 
-  // Handle customer sign in
+  
   async function onCustomerSignInSubmit(values: CustomerSignInValues) {
     try {
       const resultAction = await dispatch(loginUser(values)).unwrap();
@@ -199,11 +199,11 @@ const Page: React.FC = () => {
       );
       router.push(callbackUrl);
     } catch (error) {
-      // Error is already handled by the rejected action
+      
     }
   }
 
-  // Handle customer sign up
+  
   async function onCustomerSignUpSubmit(values: CustomerSignUpValues) {
     try {
       const { confirmPassword, username, ...rest } = values;
@@ -223,11 +223,11 @@ const Page: React.FC = () => {
       setAuthMode("signin");
       customerSignInForm.setValue("identifier", values.email);
     } catch (error) {
-      // Error is already handled by the rejected action
+      
     }
   }
 
-  // Handle seller sign in
+  
   async function onSellerSignInSubmit(values: SellerSignInValues) {
     try {
       await dispatch(loginUser(values)).unwrap();
@@ -239,11 +239,11 @@ const Page: React.FC = () => {
       );
       router.push(callbackUrl);
     } catch (error) {
-      // Error is already handled by the rejected action
+      
     }
   }
 
-  // Handle seller sign up
+  
   async function onSellerSignUpSubmit(values: SellerSignUpValues) {
     try {
       const { confirmPassword, phoneNumber, ...userData } = values;
@@ -262,7 +262,7 @@ const Page: React.FC = () => {
       setAuthMode("signin");
       sellerSignInForm.setValue("identifier", values.email);
     } catch (error) {
-      // Error is already handled by the rejected action
+      
     }
   }
 

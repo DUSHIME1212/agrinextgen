@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
-// Types
+
 interface CartItem {
   id: string
   cartId: string
@@ -42,7 +42,7 @@ const initialState: CartState = {
   error: null,
 }
 
-// Async thunks
+
 export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token")
@@ -158,7 +158,7 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (ite
   }
 })
 
-// Slice
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -178,7 +178,7 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch cart
+      
       .addCase(fetchCart.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -192,7 +192,7 @@ const cartSlice = createSlice({
         state.error = action.payload as string
       })
 
-      // Add to cart
+      
       .addCase(addToCart.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -208,7 +208,7 @@ const cartSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Update cart item
+      
       .addCase(updateCartItem.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -224,7 +224,7 @@ const cartSlice = createSlice({
         toast.error(action.payload as string)
       })
 
-      // Remove from cart
+      
       .addCase(removeFromCart.pending, (state) => {
         state.isLoading = true
         state.error = null
