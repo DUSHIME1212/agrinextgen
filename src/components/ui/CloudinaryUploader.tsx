@@ -28,17 +28,17 @@ export default function CloudinaryUploader({
     setIsUploading(true)
 
     try {
-      
+      // Debug log before upload
       console.log(
         "Starting upload with files:",
         Array.from(files).map((f) => f.name),
       )
 
-      
+      // Validate files before upload
       const validFiles = Array.from(files).filter((file) => {
         const validTypes = ["image/jpeg", "image/png", "image/webp"]
         const isValidType = validTypes.includes(file.type)
-        const isValidSize = file.size <= 5 * 1024 * 1024 
+        const isValidSize = file.size <= 5 * 1024 * 1024 // 5MB
 
         if (!isValidType) {
           toast.error(`Invalid file type: ${file.name}. Only JPG, PNG, WEBP are allowed.`)
@@ -62,18 +62,18 @@ export default function CloudinaryUploader({
         formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "ml_default")
         formData.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dzybbmiu5")
 
-        
+        // Debug log before fetch
         console.log("Uploading file:", file.name, "size:", file.size)
 
         return fetch(
-          `https:
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dzybbmiu5"}/upload`,
           {
             method: "POST",
             body: formData,
           },
         ).then(async (res) => {
           const data = await res.json()
-          console.log("Upload response:", data) 
+          console.log("Upload response:", data) // Debug log
 
           if (!res.ok) {
             const errorMsg = data.error?.message || (data.errors ? JSON.stringify(data.errors) : "Upload failed")
@@ -157,4 +157,3 @@ export default function CloudinaryUploader({
     </div>
   )
 }
-

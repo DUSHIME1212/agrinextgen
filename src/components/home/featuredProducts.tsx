@@ -54,7 +54,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ className }) => {
   };
 
   return (
-    <section className={cn("py-16 md:py-24", className)}>
+    <section className={cn("py-16 md:py-24 bg-muted/20 backdrop-blur-md", className)}>
       <div className="container-custom">
         <div className="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
           <div>
