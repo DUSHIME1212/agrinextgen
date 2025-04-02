@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a customer
-    const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN"])
+    // Check if user is a customer or admin
+    const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN", "SELLER"]) // Allow sellers to view wishlist too
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
     }
@@ -25,6 +25,13 @@ export async function GET(req: NextRequest) {
         product: {
           include: {
             productimg: true,
+            seller: {
+              select: {
+                id: true,
+                name: true,
+                businessName: true,
+              },
+            },
           },
         },
       },
@@ -47,8 +54,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error }, { status })
     }
 
-    // Check if user is a customer
-    const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN"])
+    // Check if user is a customer or admin
+    const roleCheck = checkRole(user, ["CUSTOMER", "ADMIN", "SELLER"]) // Allow sellers to add to wishlist too
     if (roleCheck.error) {
       return NextResponse.json({ error: roleCheck.error }, { status: roleCheck.status })
     }
@@ -93,6 +100,13 @@ export async function POST(req: NextRequest) {
         product: {
           include: {
             productimg: true,
+            seller: {
+              select: {
+                id: true,
+                name: true,
+                businessName: true,
+              },
+            },
           },
         },
       },

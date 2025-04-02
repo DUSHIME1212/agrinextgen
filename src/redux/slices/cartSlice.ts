@@ -14,6 +14,11 @@ interface CartItem {
     price: number
     productStatus: string
     productimg: Array<{ url: string }>
+    seller?: {
+      id: string
+      name?: string
+      businessName?: string
+    }
   }
 }
 
@@ -54,18 +59,20 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { rejectWi
 
     if (!response.ok) {
       const error = await response.json()
+      console.error("Cart fetch error:", error)
       return rejectWithValue(error.error || "Failed to fetch cart")
     }
 
     return await response.json()
   } catch (error) {
+    console.error("Cart fetch exception:", error)
     return rejectWithValue("An error occurred while fetching the cart")
   }
 })
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ productId, quantity }: { productId: string; quantity: number }, { rejectWithValue }) => {
+  async ({ productId, quantity = 1 }: { productId: string; quantity?: number }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token")
 

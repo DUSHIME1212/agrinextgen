@@ -1,29 +1,33 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { Heart, ShoppingCart, Eye, Check } from "lucide-react";
-import { cn } from "@/lib/classUtils";
-import { formatPrice, formatDiscountPrice } from "@/lib/PriceUtils";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import PlaceholderImage from "@/components/ui/PlaceholderImage";
-import Link from "next/link";
-import { toast } from "sonner";
+import type React from "react"
+
+import { useState, useEffect } from "react"
+import { Heart, ShoppingCart, Eye, Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { addToCart } from "@/redux/slices/cartSlice"
+import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishlistSlice"
 
 interface ProductCardProps {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  isNew?: boolean;
-  isSale?: boolean;
-  isOutOfStock?: boolean;
-  discount?: number;
-  rating?: number;
-  onQuickView?: () => void;
-  className?: string;
-  slug?: string;
+  id: string
+  name: string
+  price: number
+  image: string
+  category: string
+  isNew?: boolean
+  isSale?: boolean
+  isOutOfStock?: boolean
+  discount?: number
+  rating?: number
+  onQuickView?: () => void
+  className?: string
+  slug?: string
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -41,67 +45,117 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onQuickView,
   className,
 }) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { isAuthenticated } = useAppSelector((state) => state.auth)
+  const { items: wishlistItems } = useAppSelector((state) => state.wishlist)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [isAddingToWishlist, setIsAddingToWishlist] = useState(false)
+  const [isWishlisted, setIsWishlisted] = useState(false)
 
-  const formattedPrice = formatPrice(price);
+  // Check if product is in wishlist
+  useEffect(() => {
+    if (wishlistItems.length > 0) {
+      const inWishlist = wishlistItems.some((item) => item.productId === id)
+      setIsWishlisted(inWishlist)
+    }
+  }, [wishlistItems, id])
 
-  const discountPrices = discount ? formatDiscountPrice(price, discount) : null;
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price)
+  }
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const formattedPrice = formatPrice(price)
 
-    if (isOutOfStock) return;
+  const formatDiscountPrice = (price: number, discount: number) => {
+    const discountedPrice = price - discount
+    return {
+      original: formatPrice(price),
+      discounted: formatPrice(discountedPrice),
+    }
+  }
 
-    setIsAddingToCart(true);
+  const discountPrices = discount ? formatDiscountPrice(price, discount) : null
 
-    setTimeout(() => {
-      setIsAddingToCart(false);
-      toast.success(`${name} has been added to your cart.`);
-    }, 600);
-  };
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (isOutOfStock) return
 
-    setIsWishlisted(!isWishlisted);
+    if (!isAuthenticated) {
+      router.push("/auth?callbackUrl=" + encodeURIComponent(window.location.pathname))
+      toast.error("Please login to add items to your cart")
+      return
+    }
 
-    toast(
-      isWishlisted
-        ? `${name} has been removed from your wishlist.`
-        : `${name} has been added to your wishlist.`,
-    );
-  };
+    setIsAddingToCart(true)
+
+    try {
+      await dispatch(addToCart({ productId: id, quantity: 1 })).unwrap()
+      toast.success(`${name} has been added to your cart`)
+    } catch (error) {
+      toast.error("Failed to add item to cart")
+    } finally {
+      setIsAddingToCart(false)
+    }
+  }
+
+  const handleToggleWishlist = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (!isAuthenticated) {
+      router.push("/auth?callbackUrl=" + encodeURIComponent(window.location.pathname))
+      toast.error("Please login to manage your wishlist")
+      return
+    }
+
+    setIsAddingToWishlist(true)
+
+    try {
+      if (isWishlisted) {
+        const wishlistItem = wishlistItems.find((item) => item.productId === id)
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap()
+          toast.success(`${name} has been removed from your wishlist`)
+        }
+      } else {
+        await dispatch(addToWishlist(id)).unwrap()
+        toast.success(`${name} has been added to your wishlist`)
+      }
+    } catch (error) {
+      toast.error("Failed to update wishlist")
+    } finally {
+      setIsAddingToWishlist(false)
+    }
+  }
 
   const handleQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
     if (onQuickView) {
-      onQuickView();
+      onQuickView()
     }
-  };
+  }
 
   return (
     <div
       className={cn(
-        "card product-card group flex flex-col relative p-4 overflow-clip text-primary-foreground transition-all duration-300 hover:translate-y-[-5px]",
+        "card product-card group flex flex-col relative p-4 overflow-clip text-primary-foreground transition-all duration-300 hover:translate-y-[-5px] border rounded-lg",
         isOutOfStock && "opacity-70",
         className,
       )}
     >
-      
       {/* Status badges */}
       <div className="absolute left-3 top-3 z-10 flex flex-col gap-2">
-        {isNew && (
-          <Badge className="bg-primary text-primary-foreground">New</Badge>
-        )}
+        {isNew && <Badge className="bg-primary text-white">New</Badge>}
 
-        {isSale && (
-          <Badge className="bg-destructive text-primary-foreground">Sale</Badge>
-        )}
+        {isSale && <Badge className="bg-destructive text-white">Sale</Badge>}
 
         {isOutOfStock && (
           <Badge variant="secondary" className="bg-muted text-foreground">
@@ -112,10 +166,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product image */}
       <div className="min-h-72 overflow-clip">
-        <PlaceholderImage
-          src={image}
+        <img
+          src={image || "/placeholder.svg"}
           alt={name}
-          className="h-72 w-full transition-transform duration-500 group-hover:scale-105"
+          className="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Quick actions */}
@@ -141,9 +195,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   : "hover:bg-primary hover:text-primary-foreground",
               )}
               onClick={handleToggleWishlist}
+              disabled={isAddingToWishlist}
               title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <Heart size={18} className={isWishlisted ? "fill-current" : ""} />
+              {isAddingToWishlist ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Heart size={18} className={isWishlisted ? "fill-current" : ""} />
+              )}
             </Button>
 
             <Button
@@ -157,62 +216,44 @@ const ProductCard: React.FC<ProductCardProps> = ({
               onClick={handleAddToCart}
               title="Add to cart"
             >
-              {isAddingToCart ? (
-                <Check size={18} className="animate-scale-in" />
-              ) : (
-                <ShoppingCart size={18} />
-              )}
+              {isAddingToCart ? <Loader2 size={18} className="animate-spin" /> : <ShoppingCart size={18} />}
             </Button>
           </div>
         </div>
       </div>
- 
-
-      {/* Product details */}
-      <Link href={`/product/${slug}`} className="block ">
+      <Link href={`/product/${id}`} className="block">
         <div className="mb-1 text-sm text-muted-foreground">{category}</div>
-        <h3 className="mb-2 line-clamp-2 min-h-20 font-medium transition-colors text-muted-foreground hover:text-primary">
+        <h3 className="mb-2 line-clamp-2 min-h-12 font-medium transition-colors text-muted-foreground hover:text-primary">
           {name}
         </h3>
-
-        
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {discountPrices ? (
               <>
-                <span className="font-semibold">
-                  {discountPrices.discounted}
-                </span>
-                <span className="text-sm text-muted-foreground line-through">
-                  {discountPrices.original}
-                </span>
+                <span className="font-semibold">{discountPrices.discounted}</span>
+                <span className="text-sm text-muted-foreground line-through">{discountPrices.original}</span>
               </>
             ) : (
               <span className="font-semibold">{formattedPrice}</span>
             )}
           </div>
 
-          
-
           {rating && (
             <div className="flex items-center">
-              {/* Star rating would go here */}
               <span className="text-sm text-muted-foreground">{rating}</span>
             </div>
           )}
         </div>
       </Link>
-      <Button asChild className="z-20 cursor-pointer text-center">
-        <Link
-          href={`/shop/${slug}`}
-          className="font-medium  hover:underline"
-        >
+      <Button asChild className="z-20 cursor-pointer text-center mt-4">
+        <Link href={`/product/${id}`} className="font-medium hover:underline">
           View Full Details
         </Link>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard
+

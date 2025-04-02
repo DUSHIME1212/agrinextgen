@@ -53,15 +53,13 @@ const page = () => {
         <p>Password changed successfully.</p>
         </>
       );
-      
-      // Reset password fields
       setNewPassword('');
       setConfirmPassword('');
       setCurrentPassword('');
     };
   return (
-    <div className='p-8'>
-      <div className="space-y-6">
+    <div className='p-8 w-full'>
+      <div className=" ">
         <div>
           <h1 className="text-3xl font-bold">Account Settings</h1>
           <p className="text-muted-foreground">

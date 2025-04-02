@@ -1,96 +1,106 @@
 "use client"
 
-import Layout from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useAuth } from "@/hooks/useAuth";
-import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { toast } from "sonner";
+import Layout from "@/components/layout/Layout"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useAuth } from "@/hooks/useAuth"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { fetchCart, removeFromCart, updateCartItemQuantity } from "@/redux/slices/cartSlice"
+import { ArrowRight, Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useEffect } from "react"
+import { toast } from "sonner"
 
-const Page: React.FC = () => {
-  const navigate = useRouter();
-  
-  // Hardcoded cart data
-  const [Cart, SetCart] = useState([
-    {
-      id: '1',
-      name: 'Organic Avocado Oil',
-      image: 'https://res.cloudinary.com/dzybbmiu5/image/upload/v1742947169/small_vector_avocado_leaf_sliced_half_motion_208581_1739_1_e3052935a6.jpg',
-      price: 30,
-      quantity: 2,
-      sellerId: 'Don',
-      slug: 'sample-product-1',
-    },
-    {
-      id: '2',
-      name: 'Lavender Essential Oil',
-      image: 'https://res.cloudinary.com/dzybbmiu5/image/upload/v1742947170/thumbnail_realistic_avocado_vector_204950_113_1bdc139ad9.jpg',
-      price: 20,
-      quantity: 1,
-      sellerId: 'Aime ',
-      slug: 'sample-product-2',
-    },
-  ]);
+const CartPage: React.FC = () => {
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const { isAuthenticated, user } = useAuth()
+  const { cart, isLoading } = useAppSelector((state) => state.cart)
 
-  const { isAuthenticated, user } = useAuth();
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCart())
+    }
+  }, [dispatch, isAuthenticated])
 
   const handleUpdateQuantity = (id: string, currentQuantity: number, amount: number) => {
-    const newQuantity = currentQuantity + amount;
-    if (newQuantity < 1) return;
-    SetCart(prevCart => 
-      prevCart.map(item => 
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+    const newQuantity = currentQuantity + amount
+    if (newQuantity < 1) return
+
+    dispatch(updateCartItemQuantity({ id, quantity: newQuantity }))
+  }
 
   const handleRemoveItem = (id: string, name: string) => {
-    SetCart(prevCart => prevCart.filter(item => item.id !== id));
-    toast.success(`You removed ${name} from your cart.`);
-  };
+    dispatch(removeFromCart(id))
+    toast.success(`You removed ${name} from your cart.`)
+  }
 
   const handleClearCart = () => {
-    SetCart([]);
-    toast.success("Your cart has been cleared.");
-  };
+    if (cart?.items) {
+      cart.items.forEach((item) => {
+        dispatch(removeFromCart(item.id))
+      })
+    }
+    toast.success("Your cart has been cleared.")
+  }
 
   const handleCheckout = () => {
     if (isAuthenticated) {
-      navigate.push('/checkout');
+      router.push("/checkout")
     } else {
-      toast("Please login to checkout.");
-      navigate.push('/auth');
+      toast.error("Please login to checkout.")
+      router.push("/auth?callbackUrl=/checkout")
     }
-  };
+  }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-GH', {
-      style: 'currency',
-      currency: 'GHS'
-    }).format(amount);
-  };
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount)
+  }
+
+  const calculateTotal = () => {
+    if (!cart || !cart.items || cart.items.length === 0) return 0
+
+    return cart.items.reduce((total, item) => {
+      return total + item.price * item.quantity
+    }, 0)
+  }
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </Layout>
+    )
+  }
+
+  const cartItems = cart?.items || []
 
   return (
     <Layout
-      customBreadcrumbPaths={[{ name: 'Home', path: '/' }, { name: 'Cart', path: '/cart' }]}
+      customBreadcrumbPaths={[
+        { name: "Home", path: "/" },
+        { name: "Cart", path: "/cart" },
+      ]}
       className="min-h-screen"
     >
       <div className="py-12 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
 
-        {Cart.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="text-center py-16 space-y-6">
             <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
             <div>
               <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
-              <p className="text-muted-foreground mb-6">
-                Looks like you haven't added aRWthing to your cart yet.
-              </p>
+              <p className="text-muted-foreground mb-6">Looks like you haven't added anything to your cart yet.</p>
               <Button asChild>
                 <Link href="/shop">Continue Shopping</Link>
               </Button>
@@ -102,7 +112,7 @@ const Page: React.FC = () => {
               <Card>
                 <CardHeader>
                   <div className="flex justify-between items-center">
-                    <CardTitle>Cart Items ({Cart.length})</CardTitle>
+                    <CardTitle>Cart Items ({cartItems.length})</CardTitle>
                     <Button variant="outline" size="sm" onClick={handleClearCart}>
                       Clear Cart
                     </Button>
@@ -120,26 +130,26 @@ const Page: React.FC = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {Cart.map((item) => (
+                      {cartItems.map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
                             <div className="flex items-center space-x-4">
                               <div className="h-16 w-16 rounded overflow-hidden bg-secondary">
                                 <img
-                                  src={item.image}
-                                  alt={item.name}
+                                  src={item.product.productimg?.[0]?.url || "/placeholder.svg"}
+                                  alt={item.product.name}
                                   className="h-full w-full object-cover"
                                 />
                               </div>
                               <div>
                                 <Link
-                                  href={`/product/${item.slug}`}
+                                  href={`/product/${item.product.id}`}
                                   className="font-medium hover:underline line-clamp-1"
                                 >
-                                  {item.name}
+                                  {item.product.name}
                                 </Link>
                                 <p className="text-sm text-muted-foreground">
-                                  Seller: {item.sellerId}
+                                  Seller: {item.product.productStatus || "Unknown"}
                                 </p>
                               </div>
                             </div>
@@ -156,9 +166,7 @@ const Page: React.FC = () => {
                               >
                                 <Minus className="h-3 w-3" />
                               </Button>
-                              <span className="px-2 py-1 min-w-[30px] text-center">
-                                {item.quantity}
-                              </span>
+                              <span className="px-2 py-1 min-w-[30px] text-center">{item.quantity}</span>
                               <Button
                                 variant="ghost"
                                 size="icon"
@@ -169,15 +177,13 @@ const Page: React.FC = () => {
                               </Button>
                             </div>
                           </TableCell>
-                          <TableCell className="font-medium">
-                            {formatCurrency(item.price * item.quantity)}
-                          </TableCell>
+                          <TableCell className="font-medium">{formatCurrency(item.price * item.quantity)}</TableCell>
                           <TableCell>
                             <Button
                               variant="ghost"
                               size="icon"
                               className="text-muted-foreground hover:text-destructive"
-                              onClick={() => handleRemoveItem(item.id, item.name)}
+                              onClick={() => handleRemoveItem(item.id, item.product.name)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -194,7 +200,7 @@ const Page: React.FC = () => {
                 </CardFooter>
               </Card>
             </div>
-            
+
             <div>
               <Card>
                 <CardHeader>
@@ -203,7 +209,7 @@ const Page: React.FC = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>{formatCurrency(Cart.reduce((total, item) => total + item.price * item.quantity, 0))}</span>
+                    <span>{formatCurrency(calculateTotal())}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
@@ -216,26 +222,22 @@ const Page: React.FC = () => {
                   <Separator />
                   <div className="flex justify-between font-medium">
                     <span>Total</span>
-                    <span>{formatCurrency(Cart.reduce((total, item) => total + item.price * item.quantity, 0))}</span>
+                    <span>{formatCurrency(calculateTotal())}</span>
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    className="w-full"
-                    onClick={handleCheckout}
-                    disabled={Cart.length === 0}
-                  >
+                  <Button className="w-full" onClick={handleCheckout} disabled={cartItems.length === 0}>
                     Proceed to Checkout
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               <div className="mt-6 text-sm text-muted-foreground">
                 <p className="mb-2">We accept:</p>
                 <div className="flex space-x-2">
-                  <div className="px-3 py-1 border rounded">MTN Mobile Money</div>
-                  <div className="px-3 py-1 border rounded">Tigo Cash</div>
+                  <div className="px-3 py-1 border rounded">Credit Card</div>
+                  <div className="px-3 py-1 border rounded">PayPal</div>
                 </div>
               </div>
             </div>
@@ -243,7 +245,8 @@ const Page: React.FC = () => {
         )}
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Page;
+export default CartPage
+

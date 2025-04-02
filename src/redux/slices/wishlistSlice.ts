@@ -45,11 +45,13 @@ export const fetchWishlist = createAsyncThunk("wishlist/fetchWishlist", async (_
 
     if (!response.ok) {
       const error = await response.json()
+      console.error("Wishlist fetch error:", error)
       return rejectWithValue(error.error || "Failed to fetch wishlist")
     }
 
     return await response.json()
   } catch (error) {
+    console.error("Wishlist fetch exception:", error)
     return rejectWithValue("An error occurred while fetching the wishlist")
   }
 })

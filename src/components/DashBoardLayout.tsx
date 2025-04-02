@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { FilePlus, Home, LogOut, Package, PieChart, Settings, ShoppingBag, User, ChevronDown } from "lucide-react"
+import { FilePlus, Home, LogOut, Package, PieChart, Settings, ShoppingBag, User, ChevronDown, ShoppingCart, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAppDispatch } from "@/redux/hooks"
@@ -86,6 +86,8 @@ const DashboardSidebar = () => {
     { name: "Dashboard", path: "/dashboard", icon: Home },
     { name: "Order History", path: "/orders", icon: ShoppingBag },
     { name: "Transactions", path: "/transactions", icon: PieChart },
+    { name: "Cart", path: "/cart", icon: ShoppingCart },
+    { name: "Wishlist", path: "/wishlist", icon: List  },
   ]
 
   const navigationLinks = isSeller ? sellerLinks : customerLinks
