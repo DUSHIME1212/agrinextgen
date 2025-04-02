@@ -21,7 +21,7 @@ EcoBazar is a comprehensive e-commerce platform that allows users to browse and 
 1. Clone the repository:
    ```bash
    git clone https://github.com/DUSHIME1212/agrinextgen.git
-   cd ecobazar-fn
+   cd agrinextgen
    ```
 2. Install dependencies:
    ```bash
