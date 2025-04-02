@@ -1,29 +1,51 @@
-# Create T3 App
+# EcoBazar
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Description
+EcoBazar is a comprehensive e-commerce platform that allows users to browse and purchase a variety of products. The application supports user authentication, cart management, order processing, and payment handling.
 
-## What's next? How do I make an app with this?
+## Features
+- **User Authentication**: Users can register and log in to their accounts.
+- **Cart Management**: Users can add products to their cart and view their cart items.
+- **Order Processing**: Users can create and view their orders.
+- **Payment Handling**: Users can make payments for their orders.
+- **Product Management**: Sellers can create and manage their products.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Tech Stack
+- **Frontend**: Next.js, React
+- **Backend**: Node.js, Express
+- **Database**: Prisma, PostgreSQL
+- **Authentication**: JWT, bcrypt
+- **Styling**: Tailwind CSS, shadcn
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/DUSHIME1212/agrinextgen.git
+   cd ecobazar-fn
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up the database:
+   - Create a PostgreSQL database and update the connection string in the `.env` file.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Running the Application
+To run the application in development mode, use the following command:
+```bash
+npm run dev
+```
+The application will be available at `http://localhost:3000`.
 
-## Learn More
+## Environment Variables
+Make sure to create a `.env` file in the root directory with the following variables:
+```
+DATABASE_URL=your_database_url
+JWT_SECRET=your_jwt_secret
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## License
+This project is licensed under the MIT License.
