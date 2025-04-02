@@ -39,9 +39,14 @@ The application will be available at `http://localhost:3000`.
 
 ## Environment Variables
 Make sure to create a `.env` file in the root directory with the following variables:
+use a postgres connection string on database url.
 ```
-DATABASE_URL=your_database_url
-JWT_SECRET=your_jwt_secret
+DATABASE_URL=""
+JWT_SECRET=""
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=""
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
 ```
 
 ## Contributing
