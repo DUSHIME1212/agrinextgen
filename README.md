@@ -1,7 +1,7 @@
-# EcoBazar
+# AGRINEXTGEN
 
 ## Description
-EcoBazar is a comprehensive e-commerce platform that allows users to browse and purchase a variety of products. The application supports user authentication, cart management, order processing, and payment handling.
+AGRINEXTGEN is a comprehensive e-commerce platform that allows users to browse and purchase a variety of products. The application supports user authentication, cart management, order processing, and payment handling.
 
 ## Features
 - **User Authentication**: Users can register and log in to their accounts.
